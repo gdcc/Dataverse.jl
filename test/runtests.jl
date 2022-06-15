@@ -18,6 +18,6 @@ using UUIDs
     get_from_dataverse(lst,string(nam),pth)
     @test isfile(joinpath(pth,nam))
 
-    tmp=pyDataverse.demo()
-    @test isfile(tmp[1])
+#   tmp=pyDataverse.demo()
+#   @test isfile(tmp[1])
 end
