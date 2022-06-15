@@ -7,8 +7,7 @@
 
 Package to use and interface with the [Dataverse](https://dataverse.org) project APIs, collections, datasets, etc.
 
-!!! tip
-    Some documentation on available APIs is linked to here.
+Some documentation on available APIs is linked to here.
 
 - <https://demo.dataverse.org>
 - <https://pydataverse.readthedocs.io/en/latest/index.html>
