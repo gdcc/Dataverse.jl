@@ -38,6 +38,7 @@ jobs:
             Pkg.activate("./")
             Pkg.add("Conda")
             Pkg.add("PyCall")
+            using Conda
             Conda.pip_interop(true)
             Conda.pip("install", "pyDataverse")'
       - uses: julia-actions/julia-runtest@v1
