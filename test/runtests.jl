@@ -1,3 +1,8 @@
+using Conda, PyCall
+
+Conda.pip_interop(true)
+Conda.pip("install", "pyDataverse")
+
 using Dataverse
 using Test
 using UUIDs
