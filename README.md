@@ -17,3 +17,5 @@ Some documentation on available APIs is linked to here.
 using Dataverse
 (DataAccessApi,NativeApi)=pyDataverse.APIs()
 ```
+
+For more see the [demo notebook](https://github.com/gaelforget/Dataverse.jl/blob/main/docs/src/notebook.jl)
