@@ -35,6 +35,7 @@ jobs:
       - run: |
           julia -e '
             using Pkg
+            Pkg.instantiate()
             ENV["PYTHON"]=""
             Pkg.build("PyCall")
             '
