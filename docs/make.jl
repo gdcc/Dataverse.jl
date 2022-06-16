@@ -3,7 +3,7 @@ using Documenter
 
 DocMeta.setdocmeta!(Dataverse, :DocTestSetup, :(using Dataverse); recursive=true)
 
-pyDataverse.HarvardAPIs(do_install=true)
+pyDataverse.APIs(do_install=true)
 
 makedocs(;
     modules=[Dataverse],

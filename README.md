@@ -14,3 +14,7 @@ Package to use and interface with the [Dataverse](https://dataverse.org) project
 - <https://pydataverse.readthedocs.io/en/latest/index.html>
 - <https://guides.dataverse.org/en/5.11/api/index.html>
 
+```
+using Dataverse
+(DataAccessApi,NativeApi)=pyDataverse.APIs()
+```

@@ -3,20 +3,19 @@ module pyDataverse
 using Conda, PyCall
 
 """
-    HarvardAPIs(;do_install=true)
+    APIs(;do_install=true)
 
 ```
-(DataAccessApi,NativeApi)=pyDataverse.HarvardAPIs()
+(DataAccessApi,NativeApi)=pyDataverse.APIs()
 ```
 """
-function HarvardAPIs(;do_install=true)
+function APIs(;do_install=true,base_url = "https://dataverse.harvard.edu/")
     if do_install
         Conda.pip_interop(true)
         Conda.pip("install", "pyDataverse")
     end
     tmp=pyimport("pyDataverse")
     api=pyimport("pyDataverse.api")
-    base_url = "https://dataverse.harvard.edu/"
     return api.DataAccessApi(base_url), api.NativeApi(base_url)
 end
 
@@ -32,7 +31,7 @@ pyDataverse.demo()
 ```
 """
 function demo(path=tempdir())
-    (DataAccessApi,NativeApi)=pyDataverse.HarvardAPIs()
+    (DataAccessApi,NativeApi)=pyDataverse.APIs()
     DOI = "doi:10.7910/DVN/KBHLOD"
     dataset = NativeApi.get_dataset(DOI)
     files_list = dataset.json()["data"]["latestVersion"]["files"]
