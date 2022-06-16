@@ -1,5 +1,6 @@
 using Dataverse
 using Documenter
+using PlutoSliderServer
 
 DocMeta.setdocmeta!(Dataverse, :DocTestSetup, :(using Dataverse); recursive=true)
 
@@ -21,6 +22,14 @@ makedocs(;
         "APIs" => "dataverse_access.md",
     ],
 )
+
+lst=("notebook.jl",)
+for i in lst
+    fil_in=joinpath(@__DIR__,"..", "docs","src",i)
+    fil_out=joinpath(@__DIR__,"build", i[1:end-2]*"html")
+    PlutoSliderServer.export_notebook(fil_in)
+    mv(fil_in[1:end-2]*"html",fil_out)
+end
 
 deploydocs(;
     repo="github.com/gaelforget/Dataverse.jl",

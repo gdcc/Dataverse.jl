@@ -3,7 +3,7 @@ module pyDataverse
 using Conda, PyCall
 
 """
-    APIs(;do_install=true)
+    APIs(;do_install=true,base_url = "https://dataverse.harvard.edu/")
 
 ```
 (DataAccessApi,NativeApi)=pyDataverse.APIs()
@@ -20,7 +20,7 @@ function APIs(;do_install=true,base_url = "https://dataverse.harvard.edu/")
 end
 
 """
-    demo(path=tempdir())
+    demo(;path=tempdir(),DOI = "doi:10.7910/DVN/KBHLOD")
 
 Replicate the worflow example from 
 
@@ -30,9 +30,8 @@ Replicate the worflow example from
 pyDataverse.demo()
 ```
 """
-function demo(path=tempdir())
+function demo(;path=tempdir(),DOI = "doi:10.7910/DVN/KBHLOD")
     (DataAccessApi,NativeApi)=pyDataverse.APIs()
-    DOI = "doi:10.7910/DVN/KBHLOD"
     dataset = NativeApi.get_dataset(DOI)
     files_list = dataset.json()["data"]["latestVersion"]["files"]
     filenames=String[]
