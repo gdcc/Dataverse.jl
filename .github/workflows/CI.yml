@@ -32,15 +32,6 @@ jobs:
           arch: ${{ matrix.arch }}
       - uses: julia-actions/cache@v1
       - uses: julia-actions/julia-buildpkg@v1
-      - run: |
-          julia -e '
-            using Pkg
-            Pkg.activate("./")
-            Pkg.add("Conda")
-            Pkg.add("PyCall")
-            using Conda
-            Conda.pip_interop(true)
-            Conda.pip("install", "pyDataverse")'
       - uses: julia-actions/julia-runtest@v1
       - uses: julia-actions/julia-processcoverage@v1
       - uses: codecov/codecov-action@v2
@@ -60,7 +51,13 @@ jobs:
           julia --project=docs -e '
             using Pkg
             Pkg.develop(PackageSpec(path=pwd()))
-            Pkg.instantiate()'
+            Pkg.instantiate()
+            Pkg.add("Conda")
+            Pkg.add("PyCall")
+            using Conda
+            Conda.pip_interop(true)
+            Conda.pip("install", "pyDataverse")'            
+            '
       - run: julia --project=docs docs/make.jl
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
