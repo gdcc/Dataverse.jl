@@ -1,3 +1,7 @@
+using Pkg
+ENV["PYTHON"]=""
+Pkg.build("PyCall")
+
 using Conda, PyCall
 using Dataverse
 using Test
