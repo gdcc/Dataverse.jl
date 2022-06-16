@@ -3,6 +3,8 @@ using Documenter
 
 DocMeta.setdocmeta!(Dataverse, :DocTestSetup, :(using Dataverse); recursive=true)
 
+pyDataverse.APIs(do_install=true)
+
 makedocs(;
     modules=[Dataverse],
     authors="gaelforget <gforget@mit.edu> and contributors",

@@ -4,8 +4,6 @@ CurrentModule = Dataverse
 
 # Dataverse.jl
 
-Documentation for [Dataverse](https://github.com/gaelforget/Dataverse.jl).
-
 This package is about interfaces to the [Dataverse](https://dataverse.org) project APIs, collections, datasets, etc.
 
 !!! tip
