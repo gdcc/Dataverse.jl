@@ -13,3 +13,7 @@ Some documentation on available APIs is linked to here.
 - <https://pydataverse.readthedocs.io/en/latest/index.html>
 - <https://guides.dataverse.org/en/5.11/api/index.html>
 
+```
+using Dataverse
+(DataAccessApi,NativeApi)=pyDataverse.APIs()
+```
