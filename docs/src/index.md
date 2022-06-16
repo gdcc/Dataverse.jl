@@ -18,8 +18,7 @@ This package is about interfaces to the [Dataverse](https://dataverse.org) proje
 !!! warning
     This package is in very early development stage.
 
-```@index
-```
+## Functionalities
 
 ```@autodocs
 Modules = [pyDataverse, Dataverse.downloads]
