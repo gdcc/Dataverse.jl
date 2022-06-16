@@ -2,17 +2,19 @@ module pyDataverse
 
 using Conda, PyCall
 
-Conda.pip_interop(true)
-Conda.pip("install", "pyDataverse")
-
 """
-    HarvardAPIs()
+    HarvardAPIs(;do_install=true)
 
 ```
 (DataAccessApi,NativeApi)=pyDataverse.HarvardAPIs()
 ```
 """
-function HarvardAPIs()
+function HarvardAPIs(;do_install=true)
+    if do_install
+        Conda.pip_interop(true)
+        Conda.pip("install", "pyDataverse")
+    end
+    tmp=pyimport("pyDataverse")
     api=pyimport("pyDataverse.api")
     base_url = "https://dataverse.harvard.edu/"
     return api.DataAccessApi(base_url), api.NativeApi(base_url)
