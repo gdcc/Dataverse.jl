@@ -33,7 +33,7 @@ jobs:
       - uses: julia-actions/cache@v1
       - uses: julia-actions/julia-buildpkg@v1
       - run: |
-          julia -e '
+          julia --project=./ -e '
             using Pkg
             Pkg.instantiate()
             ENV["PYTHON"]=""
