@@ -10,10 +10,11 @@ using Conda, PyCall
 ```
 """
 function HarvardAPIs(;do_install=true)
-    if do_install
+#    if do_install
         Conda.pip_interop(true)
         Conda.pip("install", "pyDataverse")
-    end
+#    end
+    tmp=pyimport("pyDataverse")
     api=pyimport("pyDataverse.api")
     base_url = "https://dataverse.harvard.edu/"
     return api.DataAccessApi(base_url), api.NativeApi(base_url)
