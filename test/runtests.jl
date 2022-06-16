@@ -3,7 +3,7 @@ using Dataverse
 using Test
 using UUIDs
 
-HarvardAPIs(;do_install=true)
+pyDataverse.HarvardAPIs(;do_install=true)
 
 @testset "Dataverse.jl" begin
     lst=example_lists.OCCA_list
