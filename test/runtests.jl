@@ -1,11 +1,9 @@
 using Conda, PyCall
-
-Conda.pip_interop(true)
-Conda.pip("install", "pyDataverse")
-
 using Dataverse
 using Test
 using UUIDs
+
+HarvardAPIs(;do_install=true)
 
 @testset "Dataverse.jl" begin
     lst=example_lists.OCCA_list

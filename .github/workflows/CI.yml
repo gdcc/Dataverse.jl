@@ -51,10 +51,7 @@ jobs:
           julia --project=docs -e '
             using Pkg
             Pkg.develop(PackageSpec(path=pwd()))
-            Pkg.instantiate()
-            using Conda
-            Conda.pip_interop(true)
-            Conda.pip("install", "pyDataverse")
+            Pkg.instantiate()            
             '
       - run: julia --project=docs docs/make.jl
         env:
