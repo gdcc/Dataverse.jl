@@ -66,6 +66,9 @@ files_list = dataset.json()["data"]["latestVersion"]["files"]
 # ╔═╡ e7330644-dc09-453d-bd4e-7174fea43cfd
 files_list[1]["dataFile"]
 
+# ╔═╡ ae0a3032-73ad-482b-a020-822f9a212fe1
+tree = NativeApi.get_children("ECCOv4r2", children_types= ["datasets", "datafiles"])
+
 # ╔═╡ Cell order:
 # ╟─52c81a38-0b73-4585-8833-40a834c12312
 # ╟─e90fc026-b134-4694-87db-b5fc8fd1dcb2
@@ -73,6 +76,7 @@ files_list[1]["dataFile"]
 # ╠═2240395b-4112-4e8a-a233-26fde9dffbc4
 # ╠═e7330644-dc09-453d-bd4e-7174fea43cfd
 # ╠═b15daa71-7ded-41d8-9dd0-904a07112950
+# ╠═ae0a3032-73ad-482b-a020-822f9a212fe1
 # ╟─e448e0ce-4991-4a75-b611-570aa64439f3
 # ╟─8e7742bc-ed2e-11ec-2bbe-adbcf21330e7
 # ╟─d216f95e-fc57-4b89-b796-be08b3f137d2
