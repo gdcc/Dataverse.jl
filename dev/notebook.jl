@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.8
+# v0.19.9
 
 using Markdown
 using InteractiveUtils
@@ -62,6 +62,26 @@ end
 # ╔═╡ 2240395b-4112-4e8a-a233-26fde9dffbc4
 dataset = NativeApi.get_dataset(DOI)
 
+# ╔═╡ 52dab617-8f6b-4166-8aac-21b221ed9120
+begin
+	dataset_files = dataset.json()["data"]["latestVersion"]["files"]
+	df1=pyDataverse.dataset_files_to_DataFrame(dataset_files)
+	names(df1)
+	#@pt df1
+end
+
+# ╔═╡ eb402ef0-96fb-41d0-93e4-7fe5a69e8465
+with_terminal() do
+pretty_table(df1,header_crayon=crayon"light_yellow",alignment=:l,
+	  highlighters       = hl_col(1, crayon"light_blue"))
+end
+
+# ╔═╡ 266d8126-fbe9-4c47-a66e-95120a3cbbd5
+dataset_files[1]
+
+# ╔═╡ b37d33a3-7c44-477a-a8cb-df9511e15ce3
+dataset_files[1]["dataFile"]
+
 # ╔═╡ ae0a3032-73ad-482b-a020-822f9a212fe1
 tree = NativeApi.get_children("ECCOv4r2", children_types= ["datasets", "datafiles"])
 
@@ -72,49 +92,22 @@ begin
 	md"""Select file : $(num_select)"""
 end
 
+# ╔═╡ 5933462e-8d94-40ca-b7ef-cdcabb892444
+let
+	files=tree[num]["children"]
+	df=pyDataverse.tree_children_to_DataFrame(files)
+	#@pt df
+	with_terminal() do
+		pretty_table(df,header_crayon=crayon"light_yellow",alignment=:l,
+			highlighters = hl_col(1, crayon"light_blue"))
+	end
+end
+
 # ╔═╡ d8ee1f2c-2017-492c-8ad1-190072756936
 tree[num]["children"][num]
 
 # ╔═╡ ec69221f-fc55-441f-8e83-e14f13b33088
 string.(keys(tree[num]["children"][1]))
-
-# ╔═╡ b2795505-9109-4320-9724-9ec2a00929eb
-function tree_children_to_DataFrame(files)	
-	nf=length(files)
-	filename=[files[ff]["filename"] for ff in 1:nf]
-	pid=[files[ff]["pid"] for ff in 1:nf]
-	datafile_id=[files[ff]["datafile_id"] for ff in 1:nf]
-	DataFrame(filename=filename,pid=pid,datafile_id=datafile_id)
-end
-
-# ╔═╡ 5933462e-8d94-40ca-b7ef-cdcabb892444
-let
-	files=tree[num]["children"]
-	df=tree_children_to_DataFrame(files)
-	@pt df
-end
-
-# ╔═╡ 893b7e8c-3adb-411e-a1c2-5917d98d5a14
-function dataset_files_to_DataFrame(files)	
-	nf=length(files)
-	filename=[files[ff]["dataFile"]["filename"] for ff in 1:nf]
-	filesize=[files[ff]["dataFile"]["filesize"] for ff in 1:nf]
-	pidURL=[files[ff]["dataFile"]["pidURL"] for ff in 1:nf]
-	DataFrame(filename=filename,filesize=filesize,pidURL=pidURL)
-end
-
-# ╔═╡ 52dab617-8f6b-4166-8aac-21b221ed9120
-begin
-	dataset_files = dataset.json()["data"]["latestVersion"]["files"]
-	df1=dataset_files_to_DataFrame(dataset_files)
-	@pt df1
-end
-
-# ╔═╡ 266d8126-fbe9-4c47-a66e-95120a3cbbd5
-dataset_files[1]
-
-# ╔═╡ b37d33a3-7c44-477a-a8cb-df9511e15ce3
-dataset_files[1]["dataFile"]
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -126,7 +119,7 @@ PrettyTables = "08abe8d2-0d0c-5749-adfa-8a2ac140af0d"
 
 [compat]
 DataFrames = "~1.3.4"
-Dataverse = "~0.1.1"
+Dataverse = "~0.1.2"
 PlutoUI = "~0.7.39"
 PrettyTables = "~1.3.1"
 """
@@ -264,9 +257,9 @@ version = "1.0.0"
 
 [[deps.Dataverse]]
 deps = ["CSV", "Conda", "DataFrames", "Downloads", "OceanStateEstimation", "PyCall"]
-git-tree-sha1 = "123cd713539b28de7ce3255f369d314b1392e3c8"
+git-tree-sha1 = "74b6562256119d54340c85b549eca500f73a732e"
 uuid = "9c0b9be8-e31e-490f-90fe-77697562404d"
-version = "0.1.1"
+version = "0.1.2"
 
 [[deps.Dates]]
 deps = ["Printf"]
@@ -843,6 +836,7 @@ uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
 # ╟─e90fc026-b134-4694-87db-b5fc8fd1dcb2
 # ╟─306ced7d-005e-4e50-8295-d911403ff5fa
 # ╟─2240395b-4112-4e8a-a233-26fde9dffbc4
+# ╟─eb402ef0-96fb-41d0-93e4-7fe5a69e8465
 # ╟─52dab617-8f6b-4166-8aac-21b221ed9120
 # ╟─266d8126-fbe9-4c47-a66e-95120a3cbbd5
 # ╟─b37d33a3-7c44-477a-a8cb-df9511e15ce3
@@ -855,7 +849,5 @@ uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
 # ╟─e448e0ce-4991-4a75-b611-570aa64439f3
 # ╟─8e7742bc-ed2e-11ec-2bbe-adbcf21330e7
 # ╟─d216f95e-fc57-4b89-b796-be08b3f137d2
-# ╟─b2795505-9109-4320-9724-9ec2a00929eb
-# ╟─893b7e8c-3adb-411e-a1c2-5917d98d5a14
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
