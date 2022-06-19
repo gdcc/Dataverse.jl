@@ -61,11 +61,7 @@ function demo_download(;path=tempdir(),DOI = "doi:10.7910/DVN/KBHLOD")
     filenames
 end
 
-"""
-    tree_children_to_DataFrame(files)
-
-_Deprecated : see `dataset_file_list`+`files_to_DataFrame` instead._
-"""
+#Deprecated : see `dataset_file_list`+`files_to_DataFrame` instead
 function tree_children_to_DataFrame(files)	
 	nf=length(files)
 	filename=[files[ff]["filename"] for ff in 1:nf]
@@ -77,7 +73,9 @@ end
 """
     files_to_DataFrame(files)
 
-Convert output of e.g. `dataset.json()["data"]["latestVersion"]["files"]` to DataFrame. See notebook for a more complete example.
+Convert output from `dataset.json()["data"]["latestVersion"]["files"]` to DataFrame. 
+
+See notebook for a more complete example.
 """
 function files_to_DataFrame(files)	
 	nf=length(files)

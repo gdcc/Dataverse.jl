@@ -9,8 +9,8 @@ using Downloads, DataFrames
     download_files(lst::String,nam::String,pth::String)
 
 ```
-lst=downloads.download_urls(dataset_file_list(:OCCA_clim))
-download_files(lst,lst.name[1],tempdir())
+lst=downloads.download_urls(pyDataverse.dataset_file_list(:OCCA_clim))
+DataverseDownloads.download_files(lst,lst.name[1],tempdir())
 ```
 """
 function download_files(lists::NamedTuple,nam::String,pth::String)
