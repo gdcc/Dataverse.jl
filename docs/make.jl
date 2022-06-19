@@ -19,7 +19,6 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
-        "APIs" => "dataverse_access.md",
     ],
 )
 
