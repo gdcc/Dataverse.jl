@@ -6,7 +6,7 @@ using UUIDs
 pyDataverse.APIs(do_install=true)
 
 @testset "Dataverse.jl" begin
-    lst=OCCA_files()
+    lst=DataverseDownloads.OCCA_files()
     pth=joinpath(tempdir(),string(UUIDs.uuid4()))
     mkdir(pth)
     DataverseDownloads.download_files(lst,lst.name[1],pth)
