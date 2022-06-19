@@ -36,7 +36,7 @@ This package is about interfaces to the [Dataverse](https://dataverse.org) proje
 
 # ╔═╡ e90fc026-b134-4694-87db-b5fc8fd1dcb2
 begin
-	doi_select = @bind doi Select(["10.7910/DVN/EE3C40","10.7910/DVN/RNXA2A","10.7910/DVN/AVVGYX"])
+	doi_select = @bind DOI Select(["doi:10.7910/DVN/AVVGYX","doi:10.7910/DVN/EE3C40","doi:10.7910/DVN/RNXA2A"])
 	md"""## `get_dataset`
 
 	Select doi : $(doi_select)
@@ -44,70 +44,58 @@ begin
 	"""
 end
 
-# ╔═╡ 306ced7d-005e-4e50-8295-d911403ff5fa
-DOI="doi:"*doi
-
 # ╔═╡ 061ea815-66ef-4e06-987f-fbd1f7e837d7
 md"""## `get_children`"""
+
+# ╔═╡ 756bec67-c27e-49c1-9573-9521746cf856
+begin
+	dataversename=:ECCOv4r2
+	tree=pyDataverse.dataverse_file_list(dataversename)
+	"Done scanning dataverse files"
+end
+
+# ╔═╡ ecfc53da-38b4-478c-8559-41746d3cd8d0
+begin
+	nf=length(tree)
+	num_select = @bind num Select(1:nf)
+	md"""
+
+	Dataverse name : $(dataversename)
+	
+	Select a dataset : $(num_select)"""
+end
+
+# ╔═╡ 135e1777-6a29-4736-9b6d-60f88dbd405a
+let
+	with_terminal() do
+	pretty_table(tree[num],header_crayon=crayon"light_yellow",alignment=:l,
+		  highlighters       = hl_col(1, crayon"light_blue"))
+	end
+end
 
 # ╔═╡ e448e0ce-4991-4a75-b611-570aa64439f3
 md"""## Appendix"""
 
 # ╔═╡ d216f95e-fc57-4b89-b796-be08b3f137d2
 begin
-	(DataAccessApi,NativeApi)=pyDataverse.APIs(do_install=false)
+	(DataAccessApi,NativeApi)=pyDataverse.APIs(do_install=true)
 	"APIs ready"
 end
 
 # ╔═╡ 2240395b-4112-4e8a-a233-26fde9dffbc4
-dataset = NativeApi.get_dataset(DOI)
-
-# ╔═╡ 52dab617-8f6b-4166-8aac-21b221ed9120
 begin
-	dataset_files = dataset.json()["data"]["latestVersion"]["files"]
-	df1=pyDataverse.dataset_files_to_DataFrame(dataset_files)
-	names(df1)
-	#@pt df1
+	dataset = NativeApi.get_dataset(DOI)
+	df=pyDataverse.dataset_file_list(DOI)
+	"Done scanning dataset files"
 end
 
 # ╔═╡ eb402ef0-96fb-41d0-93e4-7fe5a69e8465
-with_terminal() do
-pretty_table(df1,header_crayon=crayon"light_yellow",alignment=:l,
-	  highlighters       = hl_col(1, crayon"light_blue"))
-end
-
-# ╔═╡ 266d8126-fbe9-4c47-a66e-95120a3cbbd5
-dataset_files[1]
-
-# ╔═╡ b37d33a3-7c44-477a-a8cb-df9511e15ce3
-dataset_files[1]["dataFile"]
-
-# ╔═╡ ae0a3032-73ad-482b-a020-822f9a212fe1
-tree = NativeApi.get_children("ECCOv4r2", children_types= ["datasets", "datafiles"])
-
-# ╔═╡ ecfc53da-38b4-478c-8559-41746d3cd8d0
-begin
-	nf=length(tree)
-	num_select = @bind num Select(1:nf)
-	md"""Select file : $(num_select)"""
-end
-
-# ╔═╡ 5933462e-8d94-40ca-b7ef-cdcabb892444
 let
-	files=tree[num]["children"]
-	df=pyDataverse.tree_children_to_DataFrame(files)
-	#@pt df
 	with_terminal() do
-		pretty_table(df,header_crayon=crayon"light_yellow",alignment=:l,
-			highlighters = hl_col(1, crayon"light_blue"))
+	pretty_table(df,header_crayon=crayon"light_yellow",alignment=:l,
+		  highlighters       = hl_col(1, crayon"light_blue"))
 	end
 end
-
-# ╔═╡ d8ee1f2c-2017-492c-8ad1-190072756936
-tree[num]["children"][num]
-
-# ╔═╡ ec69221f-fc55-441f-8e83-e14f13b33088
-string.(keys(tree[num]["children"][1]))
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -119,7 +107,7 @@ PrettyTables = "08abe8d2-0d0c-5749-adfa-8a2ac140af0d"
 
 [compat]
 DataFrames = "~1.3.4"
-Dataverse = "~0.1.2"
+Dataverse = "~0.1.3"
 PlutoUI = "~0.7.39"
 PrettyTables = "~1.3.1"
 """
@@ -257,9 +245,9 @@ version = "1.0.0"
 
 [[deps.Dataverse]]
 deps = ["CSV", "Conda", "DataFrames", "Downloads", "OceanStateEstimation", "PyCall"]
-git-tree-sha1 = "74b6562256119d54340c85b549eca500f73a732e"
+git-tree-sha1 = "77cf03ad64416f6ab6273abc747a23e057d1f23d"
 uuid = "9c0b9be8-e31e-490f-90fe-77697562404d"
-version = "0.1.2"
+version = "0.1.3"
 
 [[deps.Dates]]
 deps = ["Printf"]
@@ -834,18 +822,12 @@ uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
 # ╔═╡ Cell order:
 # ╟─52c81a38-0b73-4585-8833-40a834c12312
 # ╟─e90fc026-b134-4694-87db-b5fc8fd1dcb2
-# ╟─306ced7d-005e-4e50-8295-d911403ff5fa
-# ╟─2240395b-4112-4e8a-a233-26fde9dffbc4
 # ╟─eb402ef0-96fb-41d0-93e4-7fe5a69e8465
-# ╟─52dab617-8f6b-4166-8aac-21b221ed9120
-# ╟─266d8126-fbe9-4c47-a66e-95120a3cbbd5
-# ╟─b37d33a3-7c44-477a-a8cb-df9511e15ce3
+# ╠═2240395b-4112-4e8a-a233-26fde9dffbc4
 # ╟─061ea815-66ef-4e06-987f-fbd1f7e837d7
 # ╟─ecfc53da-38b4-478c-8559-41746d3cd8d0
-# ╟─5933462e-8d94-40ca-b7ef-cdcabb892444
-# ╟─d8ee1f2c-2017-492c-8ad1-190072756936
-# ╟─ec69221f-fc55-441f-8e83-e14f13b33088
-# ╟─ae0a3032-73ad-482b-a020-822f9a212fe1
+# ╟─135e1777-6a29-4736-9b6d-60f88dbd405a
+# ╠═756bec67-c27e-49c1-9573-9521746cf856
 # ╟─e448e0ce-4991-4a75-b611-570aa64439f3
 # ╟─8e7742bc-ed2e-11ec-2bbe-adbcf21330e7
 # ╟─d216f95e-fc57-4b89-b796-be08b3f137d2
