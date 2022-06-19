@@ -36,7 +36,7 @@ Read and derive lists (ID,name,URL) from csv file (ID,name) and return as tuple
 
 ```
 lst=example_lists.OCCA_list
-ECCO_files=dataverse_lists(lst)
+OCCA_files=dataverse_lists(lst)
 ```
 """
 function dataverse_lists(lst::String)

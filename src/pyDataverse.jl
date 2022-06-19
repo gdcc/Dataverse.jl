@@ -81,8 +81,9 @@ function dataset_files_to_DataFrame(files)
 	nf=length(files)
 	filename=[files[ff]["dataFile"]["filename"] for ff in 1:nf]
 	filesize=[files[ff]["dataFile"]["filesize"] for ff in 1:nf]
+	id=[files[ff]["dataFile"]["id"] for ff in 1:nf]    
 	pidURL=[files[ff]["dataFile"]["pidURL"] for ff in 1:nf]
-	DataFrame(filename=filename,filesize=filesize,pidURL=pidURL)
+	DataFrame(filename=filename,filesize=filesize,id=id,pidURL=pidURL)
 end
    
 
@@ -94,19 +95,33 @@ pyDataverse.demo_ECCO()
 ```
 """
 function demo_ECCO()
-    (DataAccessApi,NativeApi)=pyDataverse.APIs()
+    df1=dataset_file_list(:OCCA_clim)
+	df2=dataverse_file_list(:ECCOv4r2)
+    df1,df2
+end
 
-    DOI="doi:10.7910/DVN/AVVGYX"    
+##
+
+function dataset_file_list(nam::Symbol=:OCCA_clim)
+    (DataAccessApi,NativeApi)=pyDataverse.APIs(do_install=false)
+    DOI=(OCCA_clim="doi:10.7910/DVN/RNXA2A",ECCO_clim="doi:10.7910/DVN/3HPRZI")
+    dataset = NativeApi.get_dataset(DOI[nam])
+    dataset_files = dataset.json()["data"]["latestVersion"]["files"]
+    dataset_files_to_DataFrame(dataset_files)
+end
+
+function dataset_file_list(DOI::String="doi:10.7910/DVN/ODM2IQ")
+    (DataAccessApi,NativeApi)=pyDataverse.APIs(do_install=false)
     dataset = NativeApi.get_dataset(DOI)
     dataset_files = dataset.json()["data"]["latestVersion"]["files"]
-    df1=dataset_files_to_DataFrame(dataset_files)
+    dataset_files_to_DataFrame(dataset_files)
+end
 
-    NAME="ECCOv4r2"
-    tree = NativeApi.get_children(NAME, children_types= ["datasets", "datafiles"])
-    files=tree[1]["children"]
-	df2=tree_children_to_DataFrame(files)
-
-    df1,df2
+function dataverse_file_list(nam::Symbol=:ECCOv4r2)
+    (DataAccessApi,NativeApi)=pyDataverse.APIs(do_install=false)
+    tree = NativeApi.get_children(string(nam), children_types= ["datasets", "datafiles"])
+    #[tree_children_to_DataFrame(leaf["children"]) for leaf in tree]
+    [dataset_file_list(leaf["pid"]) for leaf in tree]
 end
 
 end
