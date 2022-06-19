@@ -22,30 +22,32 @@ end
 """
     demo(option::String)
 
-- call `demo_basic` if `option=="basic"`
-- call `demo_ECCO` if `option=="ECCO"`
+- call `demo_download` if `option=="download"`
+- call `demo_metadata` if `option=="metadata"`
 """
-function demo(option="basic")
-    if option=="basic"
-        demo_basic()
-    elseif option=="ECCO"
-        demo_ECCO()
+function demo(option="download")
+    if option=="download"
+        demo_download()
+    elseif option=="metadata"
+        demo_metadata()
+    else
+        println("unknown option")
     end
 end
 
 """
-    demo_basic(;path=tempdir(),DOI = "doi:10.7910/DVN/KBHLOD")
+    demo_download(;path=tempdir(),DOI = "doi:10.7910/DVN/KBHLOD")
 
 Replicate the worflow example from 
 
 <https://pydataverse.readthedocs.io/en/latest/user/basic-usage.html#download-and-save-a-dataset-to-disk>    
 
 ```
-pyDataverse.demo_basic()
+pyDataverse.demo_download()
 ```
 """
-function demo_basic(;path=tempdir(),DOI = "doi:10.7910/DVN/KBHLOD")
-    (DataAccessApi,NativeApi)=pyDataverse.APIs()
+function demo_download(;path=tempdir(),DOI = "doi:10.7910/DVN/KBHLOD")
+    (DataAccessApi,NativeApi)=pyDataverse.APIs(do_install=false)
     dataset = NativeApi.get_dataset(DOI)
     files_list = dataset.json()["data"]["latestVersion"]["files"]
     filenames=String[]
@@ -62,7 +64,7 @@ end
 """
     tree_children_to_DataFrame(files)
 
-Convert output of e.g. `tree[1]["children"]` to DataFrame. See notebook for a more complete example.
+_Deprecated : see `dataset_file_list`+`files_to_DataFrame` instead._
 """
 function tree_children_to_DataFrame(files)	
 	nf=length(files)
@@ -73,11 +75,11 @@ function tree_children_to_DataFrame(files)
 end
 
 """
-    dataset_children_to_DataFrame(files)
+    files_to_DataFrame(files)
 
 Convert output of e.g. `dataset.json()["data"]["latestVersion"]["files"]` to DataFrame. See notebook for a more complete example.
 """
-function dataset_files_to_DataFrame(files)	
+function files_to_DataFrame(files)	
 	nf=length(files)
 	filename=[files[ff]["dataFile"]["filename"] for ff in 1:nf]
 	filesize=[files[ff]["dataFile"]["filesize"] for ff in 1:nf]
@@ -88,13 +90,13 @@ end
    
 
 """
-    demo_ECCO()
+    demo_metadata()
 
 ```
-pyDataverse.demo_ECCO()
+pyDataverse.demo_metadata()
 ```
 """
-function demo_ECCO()
+function demo_metadata()
     df1=dataset_file_list(:OCCA_clim)
 	df2=dataverse_file_list(:ECCOv4r2)
     df1,df2
@@ -102,21 +104,43 @@ end
 
 ##
 
-function dataset_file_list(nam::Symbol=:OCCA_clim)
+"""
+    dataset_file_list(nam::Symbol=:OCCA_clim)
+
+Lookup DOI from list of demo data sets.
+
+```
+dataset_file_list(:OCCA_clim)
+```
+"""
+function dataset_file_list(nam::Symbol)
     (DataAccessApi,NativeApi)=pyDataverse.APIs(do_install=false)
     DOI=(OCCA_clim="doi:10.7910/DVN/RNXA2A",ECCO_clim="doi:10.7910/DVN/3HPRZI")
-    dataset = NativeApi.get_dataset(DOI[nam])
-    dataset_files = dataset.json()["data"]["latestVersion"]["files"]
-    dataset_files_to_DataFrame(dataset_files)
+    dataset_file_list(DOI[nam])
 end
 
-function dataset_file_list(DOI::String="doi:10.7910/DVN/ODM2IQ")
+"""
+    dataset_file_list(DOI::String="doi:10.7910/DVN/ODM2IQ")
+
+Use `NativeApi.get_dataset` to derive the list of files (name, etc) via `files_to_DataFrame`.
+
+```
+dataset_file_list("doi:10.7910/DVN/ODM2IQ")
+```
+"""
+function dataset_file_list(DOI::String)
     (DataAccessApi,NativeApi)=pyDataverse.APIs(do_install=false)
     dataset = NativeApi.get_dataset(DOI)
     dataset_files = dataset.json()["data"]["latestVersion"]["files"]
-    dataset_files_to_DataFrame(dataset_files)
+    files_to_DataFrame(dataset_files)
 end
 
+"""
+    dataverse_file_list(nam::Symbol=:ECCOv4r2)
+
+- Use `NativeApi.get_children` to get the tree of datasets
+- Loop through and return vector of `dataset_file_list` output
+"""
 function dataverse_file_list(nam::Symbol=:ECCOv4r2)
     (DataAccessApi,NativeApi)=pyDataverse.APIs(do_install=false)
     tree = NativeApi.get_children(string(nam), children_types= ["datasets", "datafiles"])

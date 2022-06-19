@@ -16,11 +16,10 @@ pyDataverse.APIs(do_install=true)
     get_from_dataverse(lst,string(nam),pth)
     @test isfile(joinpath(pth,nam))
 
-    tmp=pyDataverse.demo("basic")
+    tmp=pyDataverse.demo("download")
     @test isfile(tmp[1])
 
-    df1,df2=pyDataverse.demo("ECCO")
-    @test size(df1,1)==3
-    @test size(df2,1)==12
-        
+    df1,df2=pyDataverse.demo("metadata")
+    @test size(df1,1)==56
+    @test size(df2,1)==11
 end
