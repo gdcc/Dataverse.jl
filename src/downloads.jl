@@ -9,7 +9,7 @@ using Downloads, DataFrames
     download_files(lst::String,nam::String,pth::String)
 
 ```
-lst=downloads.download_urls(pyDataverse.dataset_file_list(:OCCA_clim))
+lst=downloads.download_urls(dataset_file_list(:OCCA_clim))
 DataverseDownloads.download_files(lst,lst.name[1],tempdir())
 ```
 """
@@ -41,7 +41,7 @@ end
 
 ##
 
-OCCA_files=download_urls(dataset_file_list(:OCCA_clim))
-ECCO_files=download_urls(dataset_file_list(:ECCO_clim))
+OCCA_files()=download_urls(dataset_file_list(:OCCA_clim))
+ECCO_files()=download_urls(dataset_file_list(:ECCO_clim))
 
 end
