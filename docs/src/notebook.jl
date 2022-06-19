@@ -73,6 +73,20 @@ let
 	end
 end
 
+# ╔═╡ dc40c42c-6d5a-4110-a8b5-7b00568c4312
+begin
+	nfi=length(tree[num].filename)
+	file_select = @bind file Select(tree[num].filename)
+	ii=findall(tree[num].filename.==file)
+	pidURL=tree[num].pidURL[ii][1]
+	md"""Select a file : $(file_select)
+	
+	"""
+end
+
+# ╔═╡ 41fa064e-53bc-48fd-9275-f9408f418b1b
+DownloadButton(pidURL, file)
+
 # ╔═╡ e448e0ce-4991-4a75-b611-570aa64439f3
 md"""## Appendix"""
 
@@ -828,6 +842,8 @@ uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
 # ╟─ecfc53da-38b4-478c-8559-41746d3cd8d0
 # ╟─135e1777-6a29-4736-9b6d-60f88dbd405a
 # ╠═756bec67-c27e-49c1-9573-9521746cf856
+# ╟─dc40c42c-6d5a-4110-a8b5-7b00568c4312
+# ╟─41fa064e-53bc-48fd-9275-f9408f418b1b
 # ╟─e448e0ce-4991-4a75-b611-570aa64439f3
 # ╟─8e7742bc-ed2e-11ec-2bbe-adbcf21330e7
 # ╟─d216f95e-fc57-4b89-b796-be08b3f137d2
