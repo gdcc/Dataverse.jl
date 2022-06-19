@@ -23,4 +23,4 @@ using Dataverse
 (DataAccessApi,NativeApi)=pyDataverse.APIs()
 ```
 
-👉 [demo notebook](https://gaelforget.github.io/Dataverse.jl/notebook.html) and [notebook code](https://github.com/gaelforget/Dataverse.jl/blob/main/docs/src/notebook.jl)
+👉 [demo notebook](https://gaelforget.github.io/Dataverse.jl/dev/notebook.html) and [notebook code](https://github.com/gaelforget/Dataverse.jl/blob/main/docs/src/notebook.jl)
