@@ -16,7 +16,7 @@ end
 
 # ╔═╡ 8e7742bc-ed2e-11ec-2bbe-adbcf21330e7
 begin
-	using Dataverse, PlutoUI
+	using Dataverse, PlutoUI, Downloads
 	using DataFrames, PrettyTables
 	"Packages ready"
 end
@@ -24,12 +24,20 @@ end
 # ╔═╡ 52c81a38-0b73-4585-8833-40a834c12312
 md"""# Dataverse.jl
 
-This package is about interfaces to the [Dataverse](https://dataverse.org) project APIs, collections, datasets, etc.
+The [Dataverse.jl](https://github.com/gaelforget/Dataverse.jl) package provide an interface to the [Dataverse](https://dataverse.org) project APIs, collections, datasets, etc.
+
+!!! note
+    Topics covered by this notebok include the following.
+
+- retrieve a `dataset` meta data from `DOI`
+- browse `dataverse` and select `dataset`
+- select a `datafile` by name and download it
 
 !!! tip
-    Some documentation on available APIs is linked to here.
+    Some documentation on available APIs is linked just below.
 
 - <https://demo.dataverse.org>
+- <https://gaelforget.github.io/Dataverse.jl/dev/>
 - <https://pydataverse.readthedocs.io/en/latest/index.html>
 - <https://guides.dataverse.org/en/5.11/api/index.html>
 """
@@ -79,13 +87,29 @@ begin
 	file_select = @bind file Select(tree[num].filename)
 	ii=findall(tree[num].filename.==file)
 	pidURL=tree[num].pidURL[ii][1]
-	md"""Select a file : $(file_select)
+	md"""## Select & Download
 	
+	Select file : $(file_select)
 	"""
 end
 
-# ╔═╡ 41fa064e-53bc-48fd-9275-f9408f418b1b
-DownloadButton(pidURL, file)
+# ╔═╡ e34e0d5b-7e43-4acd-9cf4-5916cd1b5404
+md""" Download file ? $(@bind dl Select([true,false],default=false))"""
+
+# ╔═╡ ffe06b1c-0e0e-44df-93d5-c33d88bf7e7e
+begin
+	filePATH=joinpath(tempdir(),file)
+	dl ? Downloads.download(pidURL,filePATH) : nothing
+end
+
+# ╔═╡ 1a5a27c9-7f72-49b7-a406-2576c11f0f3c
+begin
+	if isfile(filePATH)
+		stat(filePATH)
+	else
+		println("file not found")
+	end
+end
 
 # ╔═╡ e448e0ce-4991-4a75-b611-570aa64439f3
 md"""## Appendix"""
@@ -116,6 +140,7 @@ PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Dataverse = "9c0b9be8-e31e-490f-90fe-77697562404d"
+Downloads = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 PrettyTables = "08abe8d2-0d0c-5749-adfa-8a2ac140af0d"
 
@@ -841,11 +866,13 @@ uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
 # ╟─061ea815-66ef-4e06-987f-fbd1f7e837d7
 # ╟─ecfc53da-38b4-478c-8559-41746d3cd8d0
 # ╟─135e1777-6a29-4736-9b6d-60f88dbd405a
-# ╠═756bec67-c27e-49c1-9573-9521746cf856
+# ╟─756bec67-c27e-49c1-9573-9521746cf856
 # ╟─dc40c42c-6d5a-4110-a8b5-7b00568c4312
-# ╟─41fa064e-53bc-48fd-9275-f9408f418b1b
+# ╟─e34e0d5b-7e43-4acd-9cf4-5916cd1b5404
+# ╟─ffe06b1c-0e0e-44df-93d5-c33d88bf7e7e
+# ╟─1a5a27c9-7f72-49b7-a406-2576c11f0f3c
 # ╟─e448e0ce-4991-4a75-b611-570aa64439f3
-# ╟─8e7742bc-ed2e-11ec-2bbe-adbcf21330e7
+# ╠═8e7742bc-ed2e-11ec-2bbe-adbcf21330e7
 # ╟─d216f95e-fc57-4b89-b796-be08b3f137d2
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
