@@ -26,3 +26,5 @@ using Dataverse
 ```
 
 👉 [demo notebook](https://gaelforget.github.io/Dataverse.jl/dev/notebook.html) and [notebook code](https://github.com/gaelforget/Dataverse.jl/blob/main/docs/src/notebook.jl)
+
+https://user-images.githubusercontent.com/20276764/191961603-97f2fd21-bda1-42bf-b0a1-d9ea88bf480d.mp4
