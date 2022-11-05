@@ -24,7 +24,7 @@ end
 # ╔═╡ 52c81a38-0b73-4585-8833-40a834c12312
 md"""# Dataverse.jl
 
-The [Dataverse.jl](https://github.com/gaelforget/Dataverse.jl) package provide an interface to the [Dataverse](https://dataverse.org) project APIs, collections, datasets, etc.
+The [Dataverse.jl](https://github.com/gdcc/Dataverse.jl) package provide an interface to the [Dataverse](https://dataverse.org) project APIs, collections, datasets, etc.
 
 !!! note
     Topics covered by this notebok include the following.
@@ -37,7 +37,7 @@ The [Dataverse.jl](https://github.com/gaelforget/Dataverse.jl) package provide a
     Some documentation on available APIs is linked just below.
 
 - <https://demo.dataverse.org>
-- <https://gaelforget.github.io/Dataverse.jl/dev/>
+- <https://gdcc.github.io/Dataverse.jl/dev/>
 - <https://pydataverse.readthedocs.io/en/latest/index.html>
 - <https://guides.dataverse.org/en/5.11/api/index.html>
 """
