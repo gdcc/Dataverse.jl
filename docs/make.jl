@@ -9,11 +9,11 @@ pyDataverse.APIs(do_install=true)
 makedocs(;
     modules=[Dataverse],
     authors="gaelforget <gforget@mit.edu> and contributors",
-    repo="https://github.com/gaelforget/Dataverse.jl/blob/{commit}{path}#{line}",
+    repo="https://github.com/gdcc/Dataverse.jl/blob/{commit}{path}#{line}",
     sitename="Dataverse.jl",
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
-        canonical="https://gaelforget.github.io/Dataverse.jl",
+        canonical="https://gdcc.github.io/Dataverse.jl",
         edit_link="main",
         assets=String[],
     ),
@@ -31,6 +31,6 @@ for i in lst
 end
 
 deploydocs(;
-    repo="github.com/gaelforget/Dataverse.jl",
+    repo="github.com/gdcc/Dataverse.jl",
     devbranch="main",
 )

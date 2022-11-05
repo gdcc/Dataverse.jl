@@ -6,7 +6,7 @@ CurrentModule = Dataverse
 
 This package is about interfaces to the [Dataverse](https://dataverse.org) project APIs, collections, datasets, etc.
 
-👉 [demo notebook](notebook.html) and [notebook code](https://github.com/gaelforget/Dataverse.jl/blob/main/docs/src/notebook.jl)
+👉 [demo notebook](notebook.html) and [notebook code](https://github.com/gdcc/Dataverse.jl/blob/main/docs/src/notebook.jl)
 
 !!! tip
     Some documentation on the Dataverse APIs is linked here.
