@@ -21,5 +21,5 @@ This package is about interfaces to the [Dataverse](https://dataverse.org) proje
 ## Functionalities
 
 ```@autodocs
-Modules = [pyDataverse, DataverseDownloads]
+Modules = [pyDataverse, restDataverse, DataverseDownloads]
 ```
