@@ -1,6 +1,6 @@
 module DataverseDownloads
 
-import Dataverse.restDataverse.dataset_file_list
+import Dataverse.restDataverse: files
 using Downloads, DataFrames
 
 ##
@@ -15,7 +15,7 @@ DataverseDownloads.download_files(DOI,filename)
 ```
 """
 function download_files(DOI::String,nam::String,pth=tempdir())
-    df=restDataverse.dataset_file_list(DOI)
+    df=files(DOI)
     lst=download_urls(df)
     ownload_files(lst,filename,pth)
 end
@@ -24,7 +24,7 @@ end
     download_files(lst::NamedTuple,nam::String,pth::String)
 
 ```
-lst0=restDataverse.dataset_file_list("doi:10.7910/DVN/RNXA2A")
+lst0=files("doi:10.7910/DVN/RNXA2A")
 lst=DataverseDownloads.download_urls(lst0)
 DataverseDownloads.download_files(lst,lst.name[2],tempdir())
 ```
@@ -57,7 +57,7 @@ end
 
 ##
 
-OCCA_files()=download_urls(dataset_file_list(:OCCA_clim))
-ECCO_files()=download_urls(dataset_file_list(:ECCO_clim))
+OCCA_files()=download_urls(files(:OCCA_clim))
+ECCO_files()=download_urls(files(:ECCO_clim))
 
 end

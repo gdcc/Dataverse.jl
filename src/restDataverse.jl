@@ -4,19 +4,29 @@ module restDataverse
 using HTTP, JSON, DataFrames
 
 """
-    restDataverse.dataset_file_list(DOI::String="doi:10.7910/DVN/ODM2IQ")
+    restDataverse.files(DOI::String="doi:10.7910/DVN/ODM2IQ")
 
 Use HTTP, JSON, DataFrames to list files (filename, filesize, id, pidURL).
 
 ```
-restDataverse.dataset_file_list("doi:10.7910/DVN/ODM2IQ")
+restDataverse.files("doi:10.7910/DVN/ODM2IQ")
 ```
 """
-function dataset_file_list(doi="doi:10.7910/DVN/EE3C40")
+function files(doi="doi:10.7910/DVN/EE3C40")
  r=HTTP.get("https://dataverse.harvard.edu/api/datasets/:persistentId/?persistentId=$(doi)")
  tmp=JSON.parse(String(r.body))
  files=tmp["data"]["latestVersion"]["files"]
  files_to_DataFrame(files)
+end
+
+"""
+    files(nam::Symbol=:OCCA_clim)
+
+Lookup DOI from list of demo data sets (:OCCA_clim or :ECCO_clim).
+"""
+function files(nam::Symbol)
+    DOI=(OCCA_clim="doi:10.7910/DVN/RNXA2A",ECCO_clim="doi:10.7910/DVN/3HPRZI")
+    files(DOI[nam])
 end
 
 function files_to_DataFrame(files)
