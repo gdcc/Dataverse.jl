@@ -1,7 +1,7 @@
 name = "Dataverse"
 uuid = "9c0b9be8-e31e-490f-90fe-77697562404d"
 authors = ["gaelforget <gforget@mit.edu> and contributors"]
-version = "0.1.4"
+version = "0.1.5"
 
 [deps]
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
