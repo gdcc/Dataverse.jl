@@ -9,8 +9,12 @@
 
 Interface to the [Dataverse project](https://dataverse.org) APIs, collections and datasets.
 
+👉 [demo notebook](https://gdcc.github.io/Dataverse.jl/dev/notebook.html) and [notebook code](https://github.com/gdcc/Dataverse.jl/blob/main/docs/src/notebook.jl)
+
+https://user-images.githubusercontent.com/20276764/191961603-97f2fd21-bda1-42bf-b0a1-d9ea88bf480d.mp4
+
 <details>
- <summary> Links to documentation on available APIs </summary>
+ <summary> Other available APIs </summary>
 <p>
 
 - <https://demo.dataverse.org>
@@ -19,12 +23,3 @@ Interface to the [Dataverse project](https://dataverse.org) APIs, collections an
 
 </p>
 </details>
-
-```
-using Dataverse
-(DataAccessApi,NativeApi)=pyDataverse.APIs()
-```
-
-👉 [demo notebook](https://gdcc.github.io/Dataverse.jl/dev/notebook.html) and [notebook code](https://github.com/gdcc/Dataverse.jl/blob/main/docs/src/notebook.jl)
-
-https://user-images.githubusercontent.com/20276764/191961603-97f2fd21-bda1-42bf-b0a1-d9ea88bf480d.mp4
