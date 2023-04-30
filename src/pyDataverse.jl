@@ -1,6 +1,7 @@
 module pyDataverse
 
 using Conda, PyCall, DataFrames
+import Dataverse.restDataverse: files_to_DataFrame
 
 """
     APIs(;do_install=true,base_url = "https://dataverse.harvard.edu/")
@@ -68,24 +69,7 @@ function tree_children_to_DataFrame(files)
 	pid=[files[ff]["pid"] for ff in 1:nf]
 	datafile_id=[files[ff]["datafile_id"] for ff in 1:nf]
 	DataFrame(filename=filename,pid=pid,datafile_id=datafile_id)
-end
-
-"""
-    files_to_DataFrame(files)
-
-Convert output from `dataset.json()["data"]["latestVersion"]["files"]` to DataFrame. 
-
-See notebook for a more complete example.
-"""
-function files_to_DataFrame(files)	
-	nf=length(files)
-	filename=[files[ff]["dataFile"]["filename"] for ff in 1:nf]
-	filesize=[files[ff]["dataFile"]["filesize"] for ff in 1:nf]
-	id=[files[ff]["dataFile"]["id"] for ff in 1:nf]    
-	pidURL=[files[ff]["dataFile"]["pidURL"] for ff in 1:nf]
-	DataFrame(filename=filename,filesize=filesize,id=id,pidURL=pidURL)
-end
-   
+end   
 
 """
     demo_metadata()

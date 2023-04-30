@@ -4,15 +4,15 @@ module restDataverse
 using HTTP, JSON, DataFrames
 
 """
-    restDataverse.files(DOI::String="doi:10.7910/DVN/ODM2IQ")
+    file_list(DOI::String="doi:10.7910/DVN/ODM2IQ")
 
 Use HTTP, JSON, DataFrames to list files (filename, filesize, id, pidURL).
 
 ```
-restDataverse.files("doi:10.7910/DVN/ODM2IQ")
+file_list("doi:10.7910/DVN/ODM2IQ")
 ```
 """
-function files(doi="doi:10.7910/DVN/EE3C40")
+function file_list(doi="doi:10.7910/DVN/EE3C40")
  r=HTTP.get("https://dataverse.harvard.edu/api/datasets/:persistentId/?persistentId=$(doi)")
  tmp=JSON.parse(String(r.body))
  files=tmp["data"]["latestVersion"]["files"]
@@ -20,15 +20,16 @@ function files(doi="doi:10.7910/DVN/EE3C40")
 end
 
 """
-    files(nam::Symbol=:OCCA_clim)
+    file_list(nam::Symbol=:OCCA_clim)
 
 Lookup DOI from list of demo data sets (:OCCA_clim or :ECCO_clim).
 """
-function files(nam::Symbol)
+function file_list(nam::Symbol)
     DOI=(OCCA_clim="doi:10.7910/DVN/RNXA2A",ECCO_clim="doi:10.7910/DVN/3HPRZI")
-    files(DOI[nam])
+    file_list(DOI[nam])
 end
 
+#Convert output from `dataset.json()["data"]["latestVersion"]["files"]` to DataFrame
 function files_to_DataFrame(files)
         nf=length(files)
         filename=[files[ff]["dataFile"]["filename"] for ff in 1:nf]
