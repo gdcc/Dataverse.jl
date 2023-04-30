@@ -1,19 +1,35 @@
 module DataverseDownloads
 
-import Dataverse.pyDataverse.dataset_file_list
+import Dataverse.restDataverse.dataset_file_list
 using Downloads, DataFrames
 
 ##
 
 """
-    download_files(lst::String,nam::String,pth::String)
+    download_files(DOI::String,nam::String,pth=tempdir())
 
 ```
-lst=downloads.download_urls(dataset_file_list(:OCCA_clim))
-DataverseDownloads.download_files(lst,lst.name[1],tempdir())
+DOI="doi:10.7910/DVN/OYBLGK"
+filename="polygons_MBON_seascapes.geojson"
+DataverseDownloads.download_files(DOI,filename)
 ```
 """
-function download_files(lists::NamedTuple,nam::String,pth::String)
+function download_files(DOI::String,nam::String,pth=tempdir())
+    df=restDataverse.dataset_file_list(DOI)
+    lst=download_urls(df)
+    ownload_files(lst,filename,pth)
+end
+
+"""
+    download_files(lst::NamedTuple,nam::String,pth::String)
+
+```
+lst0=restDataverse.dataset_file_list("doi:10.7910/DVN/RNXA2A")
+lst=DataverseDownloads.download_urls(lst0)
+DataverseDownloads.download_files(lst,lst.name[2],tempdir())
+```
+"""
+function download_files(lists::NamedTuple,nam::String,pth=tempdir())
     ii = findall([occursin("$nam", lists.name[i]) for i=1:length(lists.ID)])
     for i in ii
         nam1=Downloads.download(lists.URL[i])
@@ -29,7 +45,7 @@ function download_files(lists::NamedTuple,nam::String,pth::String)
 end
 
 """
-    download_urls(lst::String)
+    download_urls(lst::DataFrame)
 
 Add download URL (using df.id) and return as NamedTuple.
 """
