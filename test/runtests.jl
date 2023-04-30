@@ -5,10 +5,10 @@ using UUIDs
 pyDataverse.APIs(do_install=true)
 
 @testset "Dataverse.jl" begin
-    lst=DataverseDownloads.OCCA_files()
+    lst=Dataverse.downloads.OCCA_file_list()
     pth=joinpath(tempdir(),string(UUIDs.uuid4()))
     mkdir(pth)
-    DataverseDownloads.download_files(lst,lst.name[1],pth)
+    Dataverse.file_download(lst,lst.name[1],pth)
     @test isfile(joinpath(pth,lst.name[1]))
 
     tmp=pyDataverse.demo("download")

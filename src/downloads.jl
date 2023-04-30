@@ -1,35 +1,35 @@
-module DataverseDownloads
+module downloads
 
-import Dataverse.restDataverse: files
+import Dataverse.restDataverse: file_list
 using Downloads, DataFrames
 
 ##
 
 """
-    download_files(DOI::String,nam::String,pth=tempdir())
+    file_download(DOI::String,nam::String,pth=tempdir())
 
 ```
 DOI="doi:10.7910/DVN/OYBLGK"
 filename="polygons_MBON_seascapes.geojson"
-DataverseDownloads.download_files(DOI,filename)
+file_download(DOI,filename)
 ```
 """
-function download_files(DOI::String,nam::String,pth=tempdir())
-    df=files(DOI)
-    lst=download_urls(df)
-    ownload_files(lst,filename,pth)
+function file_download(DOI::String,nam::String,pth=tempdir())
+    df=file_list(DOI)
+    lst=url_list(df)
+    ownload_file_list(lst,filename,pth)
 end
 
 """
-    download_files(lst::NamedTuple,nam::String,pth::String)
+    file_download(lst::NamedTuple,nam::String,pth::String)
 
 ```
-lst0=files("doi:10.7910/DVN/RNXA2A")
-lst=DataverseDownloads.download_urls(lst0)
-DataverseDownloads.download_files(lst,lst.name[2],tempdir())
+lst0=file_list("doi:10.7910/DVN/RNXA2A")
+lst=downloads.url_list(lst0)
+file_download(lst,lst.name[2],tempdir())
 ```
 """
-function download_files(lists::NamedTuple,nam::String,pth=tempdir())
+function file_download(lists::NamedTuple,nam::String,pth=tempdir())
     ii = findall([occursin("$nam", lists.name[i]) for i=1:length(lists.ID)])
     for i in ii
         nam1=Downloads.download(lists.URL[i])
@@ -45,11 +45,11 @@ function download_files(lists::NamedTuple,nam::String,pth=tempdir())
 end
 
 """
-    download_urls(lst::DataFrame)
+    url_list(lst::DataFrame)
 
 Add download URL (using df.id) and return as NamedTuple.
 """
-download_urls(df::DataFrame) = begin
+url_list(df::DataFrame) = begin
     tmp="https://dataverse.harvard.edu/api/access/datafile/"
     URL=[tmp*"$(df.id[j])" for j=1:length(df.id)]
     (ID=df.id,name=df.filename,URL=URL)
@@ -57,7 +57,7 @@ end
 
 ##
 
-OCCA_files()=download_urls(files(:OCCA_clim))
-ECCO_files()=download_urls(files(:ECCO_clim))
+OCCA_file_list()=url_list(file_list(:OCCA_clim))
+ECCO_file_list()=url_list(file_list(:ECCO_clim))
 
 end
