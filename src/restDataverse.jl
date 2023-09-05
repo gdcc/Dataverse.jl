@@ -6,7 +6,9 @@ using HTTP, JSON, DataFrames
 """
     file_list(DOI::String="doi:10.7910/DVN/ODM2IQ")
 
-Use HTTP, JSON, DataFrames to list files (filename, filesize, id, pidURL).
+Use HTTP, JSON, and DataFrames to list files in a dataset.
+
+Return a DataFrame with filename, filesize, and id.
 
 ```
 file_list("doi:10.7910/DVN/ODM2IQ")
@@ -29,14 +31,17 @@ function file_list(nam::Symbol)
     file_list(DOI[nam])
 end
 
-#Convert output from `dataset.json()["data"]["latestVersion"]["files"]` to DataFrame
+"""
+    files_to_DataFrame(files)
+
+Convert output from `dataset.json()["data"]["latestVersion"]["files"]` to a `DataFrame`.
+"""
 function files_to_DataFrame(files)
         nf=length(files)
         filename=[files[ff]["dataFile"]["filename"] for ff in 1:nf]
         filesize=[files[ff]["dataFile"]["filesize"] for ff in 1:nf]
         id=[files[ff]["dataFile"]["id"] for ff in 1:nf]
-        pidURL=[files[ff]["dataFile"]["pidURL"] for ff in 1:nf]
-        DataFrame(filename=filename,filesize=filesize,id=id,pidURL=pidURL)
+        DataFrame(filename=filename,filesize=filesize,id=id)
 end
 
 end
