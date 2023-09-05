@@ -11,22 +11,22 @@ using Downloads, DataFrames
 ```
 DOI="doi:10.7910/DVN/OYBLGK"
 filename="polygons_MBON_seascapes.geojson"
-file_download(DOI,filename)
+Dataverse.file_download(DOI,filename)
 ```
 """
 function file_download(DOI::String,nam::String,pth=tempdir())
     df=file_list(DOI)
     lst=url_list(df)
-    ownload_file_list(lst,filename,pth)
+    file_download(lst,nam,pth)
 end
 
 """
     file_download(lst::NamedTuple,nam::String,pth::String)
 
 ```
-lst0=file_list("doi:10.7910/DVN/RNXA2A")
-lst=downloads.url_list(lst0)
-file_download(lst,lst.name[2],tempdir())
+lst0=Dataverse.file_list("doi:10.7910/DVN/RNXA2A")
+lst=Dataverse.url_list(lst0)
+Dataverse.file_download(lst,lst.name[2],tempdir())
 ```
 """
 function file_download(lists::NamedTuple,nam::String,pth=tempdir())
@@ -47,7 +47,7 @@ end
 """
     url_list(lst::DataFrame)
 
-Add download URL (using df.id) and return as NamedTuple.
+Add download URL (using df.id) and return as `NamedTuple`.
 """
 url_list(df::DataFrame) = begin
     tmp="https://dataverse.harvard.edu/api/access/datafile/"
