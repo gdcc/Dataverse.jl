@@ -111,11 +111,42 @@ end
 # ╔═╡ 061ea815-66ef-4e06-987f-fbd1f7e837d7
 md"""## Explore a Dataverse
 
-A Dataverse may contain multiple Datasets. Here each index of `tree` is one Dataset. Below we select one of them.
+A Dataverse may contain multiple Datasets. Here each index of `tree` is one Dataset. 
 
-!!! note
-    This feature is only available from `NativeApi` currently.
+Below you can expand the Array view to browse through them. 
+
+Or you select one interactively (scroll down a bit).
 """
+
+# ╔═╡ 756bec67-c27e-49c1-9573-9521746cf856
+begin
+	#🏁
+	#using pyDataverse instead:
+	#tree=pyDataverse.dataverse_file_list()
+	
+	(header,dataverses,datasets)=Dataverse.dataverse_scan()
+	tree=[Dataverse.file_list(url) for url in datasets.persistentUrl]
+	"Done scanning dataverse files"
+end
+
+# ╔═╡ 98222492-2a6c-4f54-a40d-6f16df747991
+tree
+
+# ╔═╡ ecfc53da-38b4-478c-8559-41746d3cd8d0
+begin
+	nf=length(tree)
+	num_select = @bind num Select(1:nf)
+	md"""Select a dataset : $(num_select)"""
+end
+
+# ╔═╡ 135e1777-6a29-4736-9b6d-60f88dbd405a
+let
+	with_terminal() do
+	pretty_table(tree[num],header_crayon=crayon"light_yellow",alignment=:l,
+		  highlighters       = hl_col(1, crayon"light_blue"))
+	end
+end
+
 
 # ╔═╡ e448e0ce-4991-4a75-b611-570aa64439f3
 md"""## Appendix"""
@@ -135,31 +166,6 @@ begin
 end
 
 
-# ╔═╡ 756bec67-c27e-49c1-9573-9521746cf856
-begin
-	🏁
-	tree=pyDataverse.dataverse_file_list()
-	"Done scanning dataverse files"
-end
-
-# ╔═╡ ecfc53da-38b4-478c-8559-41746d3cd8d0
-begin
-	nf=length(tree)
-	num_select = @bind num Select(1:nf)
-	md"""Select a dataset : $(num_select)"""
-end
-
-# ╔═╡ 98222492-2a6c-4f54-a40d-6f16df747991
-tree
-
-# ╔═╡ 135e1777-6a29-4736-9b6d-60f88dbd405a
-let
-	with_terminal() do
-	pretty_table(tree[num],header_crayon=crayon"light_yellow",alignment=:l,
-		  highlighters       = hl_col(1, crayon"light_blue"))
-	end
-end
-
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
@@ -171,7 +177,7 @@ PrettyTables = "08abe8d2-0d0c-5749-adfa-8a2ac140af0d"
 
 [compat]
 DataFrames = "~1.6.1"
-Dataverse = "~0.2.1"
+Dataverse = "~0.2.2"
 PlutoUI = "~0.7.52"
 PrettyTables = "~2.2.7"
 """
@@ -182,7 +188,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.9.3"
 manifest_format = "2.0"
-project_hash = "c49cabf7d2b2146df2031acb82ec24ebea9b6bec"
+project_hash = "036b0243df11a104cab52f1ddbb0c941cbb35d1d"
 
 [[deps.AbstractPlutoDingetjes]]
 deps = ["Pkg"]
@@ -279,9 +285,9 @@ version = "1.0.0"
 
 [[deps.Dataverse]]
 deps = ["CSV", "Conda", "DataFrames", "Downloads", "HTTP", "JSON", "PyCall"]
-git-tree-sha1 = "c3a709a2e010f8607719d272c948e0a90ca7062b"
+git-tree-sha1 = "3626d05ba186ba363f6df5d70e46306c484e2087"
 uuid = "9c0b9be8-e31e-490f-90fe-77697562404d"
-version = "0.2.1"
+version = "0.2.2"
 
 [[deps.Dates]]
 deps = ["Printf"]
@@ -686,8 +692,8 @@ version = "17.4.0+0"
 # ╟─1a5a27c9-7f72-49b7-a406-2576c11f0f3c
 # ╟─061ea815-66ef-4e06-987f-fbd1f7e837d7
 # ╟─756bec67-c27e-49c1-9573-9521746cf856
-# ╟─ecfc53da-38b4-478c-8559-41746d3cd8d0
 # ╟─98222492-2a6c-4f54-a40d-6f16df747991
+# ╟─ecfc53da-38b4-478c-8559-41746d3cd8d0
 # ╟─135e1777-6a29-4736-9b6d-60f88dbd405a
 # ╟─e448e0ce-4991-4a75-b611-570aa64439f3
 # ╟─8e7742bc-ed2e-11ec-2bbe-adbcf21330e7
