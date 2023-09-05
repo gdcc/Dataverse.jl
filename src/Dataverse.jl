@@ -1,7 +1,7 @@
 module Dataverse
 
 include("restDataverse.jl")
-import Dataverse.restDataverse: file_list
+import Dataverse.restDataverse: file_list, dataverse_scan
 
 include("pyDataverse.jl")
 export pyDataverse

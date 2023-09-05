@@ -32,14 +32,18 @@ Dataverse.file_download(lst,lst.name[2],tempdir())
 function file_download(lists::NamedTuple,nam::String,pth=tempdir())
     ii = findall([occursin("$nam", lists.name[i]) for i=1:length(lists.ID)])
     for i in ii
-        nam1=Downloads.download(lists.URL[i])
         if length(ii)>1
             !isdir(joinpath(pth,nam)) ? mkdir(joinpath(pth,nam)) : nothing
             nam2=joinpath(pth,nam,lists.name[i])
-            mv(nam1,nam2)
         else
             nam2=joinpath(pth,lists.name[i])
+        end
+        if !isfile(nam2)
+            nam1=Downloads.download(lists.URL[i])
             mv(nam1,nam2)
+            println("Downloading file : $(nam2)")
+        else
+            println("Skipping file that's already there : $(nam2)")
         end
     end
 end

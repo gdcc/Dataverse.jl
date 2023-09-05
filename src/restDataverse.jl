@@ -32,6 +32,48 @@ function file_list(nam::Symbol)
 end
 
 """
+    dataverse_scan(nam::Symbol=:ECCOv4r2)
+
+Use HTTP, JSON, and DataFrames to list contents in a dataverse.
+
+Returns header (Dict), dataverses (DataFrame), and datasets (DataFrame).
+
+```
+(header,dataverses,datasets)=Dataverse.dataverse_scan()
+Dataverse.file_list(datasets[1,:persistentUrl])
+```
+"""
+function dataverse_scan(nam::Symbol=:ECCOv4r2)
+    #header
+    r=HTTP.get("https://dataverse.harvard.edu/api/dataverses/$(nam)")
+    header=JSON.parse(String(r.body))["data"]
+    #contents
+    r=HTTP.get("https://dataverse.harvard.edu/api/dataverses/$(nam)/contents")
+    tmp=JSON.parse(String(r.body))["data"]
+    type=[f["type"] for f in tmp]
+    #1. dataverses
+    ii=findall(type.=="dataverse")
+    if !isempty(ii)
+        id=[f["id"] for f in tmp[ii]]
+        title=[f["title"] for f in tmp[ii]]
+        dataverses=DataFrame(id=id,type=type[ii],title=title)
+    else
+        dataverses=DataFrame(id=[],type=[],title=[])
+    end
+    #2. datasets
+    ii=findall(type.=="dataset")
+    if !isempty(ii)
+        id=[f["id"] for f in tmp[ii]]
+        persistentUrl=[f["persistentUrl"] for f in tmp[ii]]
+        datasets=DataFrame(id=id,type=type[ii],persistentUrl=persistentUrl)
+    else
+        dataverses=DataFrame(id=[],type=[],persistentUrl=[])
+    end
+    #
+    return header,dataverses,datasets
+end
+
+"""
     files_to_DataFrame(files)
 
 Convert output from `dataset.json()["data"]["latestVersion"]["files"]` to a `DataFrame`.
@@ -41,7 +83,9 @@ function files_to_DataFrame(files)
         filename=[files[ff]["dataFile"]["filename"] for ff in 1:nf]
         filesize=[files[ff]["dataFile"]["filesize"] for ff in 1:nf]
         id=[files[ff]["dataFile"]["id"] for ff in 1:nf]
-        DataFrame(filename=filename,filesize=filesize,id=id)
+        tmp="https://dataverse.harvard.edu/api/access/datafile/"
+        url=[tmp*"$(id[nf])" for ff in 1:nf]
+        DataFrame(filename=filename,filesize=filesize,id=id,url=url)
 end
 
 end
