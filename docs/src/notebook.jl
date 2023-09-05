@@ -89,7 +89,7 @@ begin
 end
 
 # ╔═╡ e34e0d5b-7e43-4acd-9cf4-5916cd1b5404
-md""" Download file ? $(@bind dl Select([true,false],default=false))"""
+md""" Download file ? $(@bind dl Select([true,false],default=true))"""
 
 # ╔═╡ ffe06b1c-0e0e-44df-93d5-c33d88bf7e7e
 begin
