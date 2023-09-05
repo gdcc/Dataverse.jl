@@ -40,7 +40,7 @@ Returns header (Dict), dataverses (DataFrame), and datasets (DataFrame).
 
 ```
 (header,dataverses,datasets)=Dataverse.dataverse_scan()
-Dataverse.file_list(datasets[1,:persistentUrl])
+Dataverse.file_list(datasets.persistentUrl[1])
 ```
 """
 function dataverse_scan(nam::Symbol=:ECCOv4r2)
