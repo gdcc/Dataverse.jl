@@ -16,30 +16,28 @@ Dataverse.file_download(DOI,filename)
 """
 function file_download(DOI::String,nam::String,pth=tempdir())
     df=file_list(DOI)
-    lst=url_list(df)
     file_download(lst,nam,pth)
 end
 
 """
-    file_download(lst::NamedTuple,nam::String,pth::String)
+    file_download(list::DataFrame,nam::String,pth::String)
 
 ```
-lst0=Dataverse.file_list("doi:10.7910/DVN/RNXA2A")
-lst=Dataverse.url_list(lst0)
-Dataverse.file_download(lst,lst.name[2],tempdir())
+lst=Dataverse.file_list("doi:10.7910/DVN/RNXA2A")
+Dataverse.file_download(lst,lst.filename[2],tempdir())
 ```
 """
-function file_download(lists::NamedTuple,nam::String,pth=tempdir())
-    ii = findall([occursin("$nam", lists.name[i]) for i=1:length(lists.ID)])
+function file_download(list::DataFrame,nam::String,pth=tempdir())
+    ii = findall([occursin("$nam", list.filename[i]) for i=1:length(list.id)])
     for i in ii
         if length(ii)>1
             !isdir(joinpath(pth,nam)) ? mkdir(joinpath(pth,nam)) : nothing
-            nam2=joinpath(pth,nam,lists.name[i])
+            nam2=joinpath(pth,nam,list.filename[i])
         else
-            nam2=joinpath(pth,lists.name[i])
+            nam2=joinpath(pth,list.filename[i])
         end
         if !isfile(nam2)
-            nam1=Downloads.download(lists.URL[i])
+            nam1=Downloads.download(list.url[i])
             mv(nam1,nam2)
             println("Downloading file : $(nam2)")
         else
@@ -48,20 +46,9 @@ function file_download(lists::NamedTuple,nam::String,pth=tempdir())
     end
 end
 
-"""
-    url_list(lst::DataFrame)
-
-Add download URL (using df.id) and return as `NamedTuple`.
-"""
-url_list(df::DataFrame) = begin
-    tmp="https://dataverse.harvard.edu/api/access/datafile/"
-    URL=[tmp*"$(df.id[j])" for j=1:length(df.id)]
-    (ID=df.id,name=df.filename,URL=URL)
-end
-
 ##
 
-OCCA_file_list()=url_list(file_list(:OCCA_clim))
-ECCO_file_list()=url_list(file_list(:ECCO_clim))
+OCCA_file_list()=file_list(:OCCA_clim)
+ECCO_file_list()=file_list(:ECCO_clim)
 
 end

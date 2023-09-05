@@ -15,7 +15,7 @@ This package is about interfaces to the [Dataverse](https://dataverse.org) data 
 
 ```@docs
 file_list
-url_list
 file_download
+dataverse_scan
 ```
 
