@@ -16,7 +16,7 @@ Dataverse.file_download(DOI,filename)
 """
 function file_download(DOI::String,nam::String,pth=tempdir())
     df=file_list(DOI)
-    file_download(lst,nam,pth)
+    file_download(df,nam,pth)
 end
 
 """
