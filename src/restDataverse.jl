@@ -84,7 +84,7 @@ function files_to_DataFrame(files)
         filesize=[files[ff]["dataFile"]["filesize"] for ff in 1:nf]
         id=[files[ff]["dataFile"]["id"] for ff in 1:nf]
         tmp="https://dataverse.harvard.edu/api/access/datafile/"
-        url=[tmp*"$(id[nf])" for ff in 1:nf]
+        url=[tmp*"$(id[ff])" for ff in 1:nf]
         DataFrame(filename=filename,filesize=filesize,id=id,url=url)
 end
 
