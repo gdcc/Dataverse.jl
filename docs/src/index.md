@@ -14,7 +14,16 @@ This package is about interfaces to the [Dataverse](https://dataverse.org) data 
 For example:
 
 ```@example 1
-using Dataverse
+using Dataverse 
+
+DOI="doi:10.7910/DVN/EE3C40"
+files=Dataverse.file_list(DOI)
+Dataverse.file_download(DOI,files.filename[1])
+```
+
+or 
+
+```@example 1
 (header,dataverses,datasets)=Dataverse.dataverse_scan(:ECCOv4r2)
 ```
 
@@ -28,14 +37,6 @@ and
 
 ```@example 1
 Dataverse.file_download(files,files.filename[1])
-```
-
-or 
-
-```@example 1
-DOI="doi:10.7910/DVN/EE3C40"
-files=Dataverse.file_list(DOI)
-Dataverse.file_download(DOI,files.filename[1])
 ```
 
 ## Julia Dataverse API
