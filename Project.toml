@@ -22,6 +22,7 @@ DataversePyCallExt = ["PyCall"]
 CSV = "0.10"
 Conda = "1"
 DataFrames = "1"
+Downloads = "1"
 HTTP = "1"
 JSON = "0.21"
 PyCall = "1"
