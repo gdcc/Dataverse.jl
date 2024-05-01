@@ -14,12 +14,12 @@ makedocs(;
         prettyurls=get(ENV, "CI", "false") == "true",
         canonical="https://gdcc.github.io/Dataverse.jl",
         edit_link="main",
-        assets=String[],
     ),
     pages=[
         "Home" => "index.md",
         "Other" => "other.md",
     ],
+    warnonly = [:cross_references,:missing_docs],
 )
 
 lst=("notebook.jl",)
