@@ -1,7 +1,8 @@
 module pyDataverse
 
-using Conda, PyCall, DataFrames
+using DataFrames
 import Dataverse.restDataverse: files_to_DataFrame
+import Dataverse: pyDataverse_APIs
 
 """
     APIs(;do_install=true,base_url = "https://dataverse.harvard.edu/")
@@ -11,13 +12,7 @@ import Dataverse.restDataverse: files_to_DataFrame
 ```
 """
 function APIs(;do_install=true,base_url = "https://dataverse.harvard.edu/")
-    if do_install
-        Conda.pip_interop(true)
-        Conda.pip("install", "pyDataverse")
-    end
-    tmp=pyimport("pyDataverse")
-    api=pyimport("pyDataverse.api")
-    return api.DataAccessApi(base_url), api.NativeApi(base_url)
+    error("pyDataverse_APIs is now available via the PyCall extension.")
 end
 
 """
@@ -48,7 +43,7 @@ pyDataverse.demo_download()
 ```
 """
 function demo_download(;path=tempdir(),DOI = "doi:10.7910/DVN/KBHLOD")
-    (DataAccessApi,NativeApi)=pyDataverse.APIs(do_install=false)
+    (DataAccessApi,NativeApi)=pyDataverse_APIs(true)
     dataset = NativeApi.get_dataset(DOI)
     files_list = dataset.json()["data"]["latestVersion"]["files"]
     filenames=String[]
@@ -96,7 +91,7 @@ dataset_file_list(:OCCA_clim)
 ```
 """
 function dataset_file_list(nam::Symbol)
-    (DataAccessApi,NativeApi)=pyDataverse.APIs(do_install=false)
+    (DataAccessApi,NativeApi)=pyDataverse_APIs()
     DOI=(OCCA_clim="doi:10.7910/DVN/RNXA2A",ECCO_clim="doi:10.7910/DVN/3HPRZI")
     dataset_file_list(DOI[nam])
 end
@@ -111,7 +106,7 @@ dataset_file_list("doi:10.7910/DVN/ODM2IQ")
 ```
 """
 function dataset_file_list(DOI::String)
-    (DataAccessApi,NativeApi)=pyDataverse.APIs(do_install=false)
+    (DataAccessApi,NativeApi)=pyDataverse_APIs()
     dataset = NativeApi.get_dataset(DOI)
     dataset_files = dataset.json()["data"]["latestVersion"]["files"]
     files_to_DataFrame(dataset_files)
@@ -124,7 +119,7 @@ end
 - Loop through and return vector of `dataset_file_list` output
 """
 function dataverse_file_list(nam::Symbol=:ECCOv4r2)
-    (DataAccessApi,NativeApi)=pyDataverse.APIs(do_install=false)
+    (DataAccessApi,NativeApi)=pyDataverse_APIs()
     tree = NativeApi.get_children(string(nam), children_types= ["datasets", "datafiles"])
     #[tree_children_to_DataFrame(leaf["children"]) for leaf in tree]
     [dataset_file_list(leaf["pid"]) for leaf in tree]

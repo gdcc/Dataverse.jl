@@ -1,8 +1,7 @@
-using Dataverse
-using Test
-using UUIDs
+using Dataverse, Conda, PyCall, UUIDs, Test
 
-pyDataverse.APIs(do_install=true)
+Dataverse.pyDataverse_install()
+Dataverse.pyDataverse_APIs()
 
 @testset "Dataverse.jl" begin
     lst=Dataverse.downloads.OCCA_file_list()
