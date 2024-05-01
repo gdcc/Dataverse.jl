@@ -1,10 +1,9 @@
-using Dataverse
-using Documenter
-using PlutoSliderServer
+using Dataverse, Conda, PyCall, Documenter, PlutoSliderServer
 
 DocMeta.setdocmeta!(Dataverse, :DocTestSetup, :(using Dataverse); recursive=true)
 
-pyDataverse.APIs(do_install=true)
+Dataverse.pyDataverse_install()
+Dataverse.pyDataverse_APIs()
 
 makedocs(;
     modules=[Dataverse],

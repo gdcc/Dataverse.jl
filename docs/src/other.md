@@ -1,7 +1,6 @@
 ## pyDataverse and other APIs
 
-!!! tip
-    Some documentation on the Dataverse APIs is linked here.
+!!! The Python APIs for Dataverse are available via the PyCall and Conda package extensions. Documentation for these APIs is linked below.
 
 - <https://demo.dataverse.org>
 - <https://pydataverse.readthedocs.io/en/latest/index.html>
