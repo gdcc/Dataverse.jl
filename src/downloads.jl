@@ -1,7 +1,14 @@
+
 module downloads
 
 import Dataverse.restDataverse: file_list
 using Downloads, DataFrames
+using Tar, CodecZlib, ZipFile
+
+##
+
+OCCA_file_list()=file_list(:OCCA_clim)
+ECCO_file_list()=file_list(:ECCO_clim)
 
 ##
 
@@ -48,7 +55,38 @@ end
 
 ##
 
-OCCA_file_list()=file_list(:OCCA_clim)
-ECCO_file_list()=file_list(:ECCO_clim)
+"""
+    untargz(fil)
 
+Decompress and extract data from a `.tar.gz` file.
+"""
+function untargz(fil)
+    open(fil) do io
+        Tar.extract(CodecZlib.GzipDecompressorStream(io))
+    end
+end
+
+"""
+function unzip(file,exdir="")
+    
+Source : @sylvaticus, https://discourse.julialang.org/t/
+how-to-extract-a-file-in-a-zip-archive-without-using-os-specific-tools/34585/5
+"""
+function unzip(file,exdir="")
+    fileFullPath = isabspath(file) ?  file : joinpath(pwd(),file)
+    basePath = dirname(fileFullPath)
+    outPath = (exdir == "" ? basePath : (isabspath(exdir) ? exdir : joinpath(pwd(),exdir)))
+    isdir(outPath) ? "" : mkdir(outPath)
+    zarchive = ZipFile.Reader(fileFullPath)
+    for f in zarchive.files
+        fullFilePath = joinpath(outPath,f.name)
+        if (endswith(f.name,"/") || endswith(f.name,"\\"))
+            mkdir(fullFilePath)
+        else
+            write(fullFilePath, read(f))
+        end
+    end
+    close(zarchive)
+end
+    
 end

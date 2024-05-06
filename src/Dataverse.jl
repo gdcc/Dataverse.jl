@@ -10,7 +10,6 @@ include("pyDataverse.jl")
 export pyDataverse
 
 include("downloads.jl")
-import Dataverse.downloads: file_download
-
+import Dataverse.downloads: file_download, unzip, untargz
 
 end
