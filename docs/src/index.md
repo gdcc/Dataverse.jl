@@ -45,5 +45,7 @@ Dataverse.file_download(files,files.filename[1])
 file_list
 file_download
 dataverse_scan
+unzip
+untargz
 ```
 
