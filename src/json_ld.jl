@@ -6,7 +6,13 @@ module json_ld
 - add function to generate sitemap from Dataverse folder? zenodo?
 """
 
-using HTTP, JSON
+import HTTP, JSON
+
+get(doi; to_file=false) = begin
+  h=doi_to_html("10.7910/DVN/CAGYQL")
+  j,f=html_to_json_ld(h)
+  to_file ? f : j
+end
 
 doi_to_html(doi) = begin
   url="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:$(doi)"

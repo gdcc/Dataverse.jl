@@ -13,5 +13,6 @@ include("downloads.jl")
 import Dataverse.downloads: file_download, unzip, untargz
 
 include("json_ld.jl")
+export json_ld
 
 end
