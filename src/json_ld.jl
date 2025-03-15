@@ -8,12 +8,26 @@ module json_ld
 
 import HTTP, JSON
 
+"""
+    get(doi; to_file=false)
+
+```
+j=json_ld.get("10.7910/DVN/CAGYQL")
+```
+"""
 get(doi; to_file=false) = begin
   h=doi_to_html("10.7910/DVN/CAGYQL")
   j,f=html_to_json_ld(h)
   to_file ? f : j
 end
 
+"""
+    html_to_json_ld(file_html1)
+
+```
+h=json_ld.doi_to_html("10.7910/DVN/CAGYQL")
+```
+"""
 doi_to_html(doi) = begin
   url="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:$(doi)"
   r=HTTP.get(url)
@@ -26,9 +40,8 @@ end
     html_to_json_ld(file_html1)
 
 ```
-h=Dataverse.json_ld.doi_to_html("10.7910/DVN/CAGYQL")
-#h="original.html"
-j,f=Dataverse.json_ld.html_to_json_ld(h)
+h=json_ld.doi_to_html("10.7910/DVN/CAGYQL")
+j,f=json_ld.html_to_json_ld(h)
 ```
 """
 function html_to_json_ld(file_html1)
