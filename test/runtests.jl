@@ -17,8 +17,10 @@ end
     lst=Dataverse.downloads.OCCA_file_list()
     pth=joinpath(tempdir(),string(UUIDs.uuid4()))
     mkdir(pth)
-    Dataverse.file_download(lst,lst.filename[1],pth)
-    @test isfile(joinpath(pth,lst.filename[1]))
+
+    jj=2
+    Dataverse.file_download(lst,lst.filename[jj],pth)
+    @test isfile(joinpath(pth,lst.filename[jj]))
 
     url="https://zenodo.org/records/11062685/files/OCCA2HR1_analysis.tar.gz"
     fil=joinpath(tempdir(),"OCCA2HR1_analysis.tar.gz")
