@@ -1,14 +1,9 @@
 using Dataverse, Conda, PyCall, UUIDs, Test
 
-Dataverse.pyDataverse_install()
-Dataverse.pyDataverse_APIs()
-
-@testset "Dataverse.jl" begin
-    lst=Dataverse.downloads.OCCA_file_list()
-    pth=joinpath(tempdir(),string(UUIDs.uuid4()))
-    mkdir(pth)
-    Dataverse.file_download(lst,lst.filename[1],pth)
-    @test isfile(joinpath(pth,lst.filename[1]))
+do_py_test=false
+if do_py_test
+    Dataverse.pyDataverse_install()
+    Dataverse.pyDataverse_APIs()
 
     tmp=pyDataverse.demo("download")
     @test isfile(tmp[1])
@@ -16,6 +11,19 @@ Dataverse.pyDataverse_APIs()
     df1,df2=pyDataverse.demo("metadata")
     @test size(df1,1)==56
     @test size(df2,1)==11
+end
+
+@testset "Dataverse.jl" begin
+    lst=Dataverse.downloads.OCCA_file_list()
+    pth=joinpath(tempdir(),string(UUIDs.uuid4()))
+    mkdir(pth)
+
+    j=json_ld.get("10.7910/DVN/CAGYQL")
+    @test j["@type"]=="sc:Dataset"
+    
+    jj=2
+    Dataverse.file_download(lst,lst.filename[jj],pth)
+    @test isfile(joinpath(pth,lst.filename[jj]))
 
     url="https://zenodo.org/records/11062685/files/OCCA2HR1_analysis.tar.gz"
     fil=joinpath(tempdir(),"OCCA2HR1_analysis.tar.gz")
