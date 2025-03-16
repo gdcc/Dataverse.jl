@@ -18,6 +18,9 @@ end
     pth=joinpath(tempdir(),string(UUIDs.uuid4()))
     mkdir(pth)
 
+    j=json_ld.get("10.7910/DVN/CAGYQL")
+    @test j["@type"]=="sc:Dataset"
+    
     jj=2
     Dataverse.file_download(lst,lst.filename[jj],pth)
     @test isfile(joinpath(pth,lst.filename[jj]))
