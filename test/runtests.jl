@@ -1,10 +1,13 @@
-using Dataverse, Conda, PyCall, UUIDs, Test
+using Dataverse, PythonCall, UUIDs, Test
 
-do_py_test=false
-if do_py_test
+do_py_test=1
+if do_py_test>0
     Dataverse.pyDataverse_install()
-    Dataverse.pyDataverse_APIs()
+    (DataAccessApi,NativeApi)=Dataverse.pyDataverse_APIs()
+    @test typeof(DataAccessApi)==Py
+end
 
+if do_py_test>1
     tmp=pyDataverse.demo("download")
     @test isfile(tmp[1])
 
@@ -37,3 +40,4 @@ end
     Dataverse.unzip(fil,tempdir())
     @test ispath(joinpath(tempdir(),"ne_110m_admin_0_countries.shp"))
 end
+

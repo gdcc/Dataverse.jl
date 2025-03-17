@@ -1,7 +1,7 @@
 name = "Dataverse"
 uuid = "9c0b9be8-e31e-490f-90fe-77697562404d"
 authors = ["gaelforget <gforget@mit.edu> and contributors"]
-version = "0.2.6"
+version = "0.2.7"
 
 [deps]
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
@@ -10,26 +10,28 @@ DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Downloads = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
 HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
 JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+NetworkOptions = "ca575930-c2e3-43a9-ace4-1e988b2c1908"
 Tar = "a4e569a6-e804-4fa4-b0f3-eef7a1d5b13e"
 ZipFile = "a5390f91-8eb1-5f08-bee0-b1d1ffed6cea"
 
 [weakdeps]
-Conda = "8f4d0f93-b110-5947-807f-2305c1781a2d"
-PyCall = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
+CondaPkg = "992eb4ea-22a4-4c89-a5bb-47a3300528ab"
+PythonCall = "6099a3de-0909-46bc-b1f4-468b9a2dfc0d"
 
 [extensions]
-DataverseCondaExt = ["Conda"]
-DataversePyCallExt = ["PyCall"]
+DataverseCondaPkgExt = ["CondaPkg"]
+DataversePythonCallExt = ["PythonCall"]
 
 [compat]
 CSV = "0.10"
 CodecZlib = "0.7"
-Conda = "1"
+CondaPkg = "0.2"
 DataFrames = "1"
 Downloads = "1"
 HTTP = "1"
 JSON = "0.21"
-PyCall = "1"
+NetworkOptions = "1.2.0"
+PythonCall = "0.9"
 Tar = "1"
 ZipFile = "0.10"
 julia = "1.9"
