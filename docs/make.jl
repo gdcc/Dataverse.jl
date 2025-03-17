@@ -1,4 +1,4 @@
-using Dataverse, Conda, PyCall, Documenter, PlutoSliderServer
+using Dataverse, PythonCall, Documenter, PlutoSliderServer
 
 DocMeta.setdocmeta!(Dataverse, :DocTestSetup, :(using Dataverse); recursive=true)
 
