@@ -8,21 +8,20 @@ if do_py_test>0
 end
 
 if do_py_test>1
-    tmp=pyDataverse.demo("download")
+    tmp=pyDataverse.demo_download()
     @test isfile(tmp[1])
-
-    df1,df2=pyDataverse.demo("metadata")
-    @test size(df1,1)==56
-    @test size(df2,1)==11
 end
 
 @testset "Dataverse.jl" begin
-    lst=Dataverse.downloads.OCCA_file_list()
-    pth=joinpath(tempdir(),string(UUIDs.uuid4()))
-    mkdir(pth)
+    (header,dataverses,datasets)=Dataverse.dataverse_scan()
+    @test isa(header,Dict)
 
     j=json_ld.get("10.7910/DVN/CAGYQL")
     @test j["@type"]=="sc:Dataset"
+
+    lst=Dataverse.file_list(:OCCA_clim)
+    pth=joinpath(tempdir(),string(UUIDs.uuid4()))
+    mkdir(pth)
     
     jj=2
     Dataverse.file_download(lst,lst.filename[jj],pth)

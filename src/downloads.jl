@@ -7,11 +7,6 @@ using Tar, CodecZlib, ZipFile
 
 ##
 
-OCCA_file_list()=file_list(:OCCA_clim)
-ECCO_file_list()=file_list(:ECCO_clim)
-
-##
-
 """
     file_download(DOI::String,nam::String,pth=tempdir())
 
