@@ -1,7 +1,7 @@
 name = "Dataverse"
 uuid = "9c0b9be8-e31e-490f-90fe-77697562404d"
 authors = ["gaelforget <gforget@mit.edu> and contributors"]
-version = "0.2.5"
+version = "0.2.6"
 
 [deps]
 ArgoData = "9eb831cf-c491-48dc-bed4-6aca718df73c"
