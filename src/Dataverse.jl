@@ -3,8 +3,8 @@ module Dataverse
 include("restDataverse.jl")
 import Dataverse.restDataverse: file_list, dataverse_scan
 
-pyDataverse_install(dev::String) = pyDataverse_install(true)
-pyDataverse_APIs(dev::String) = pyDataverse_APIs(true)
+pyDataverse_install() = pyDataverse_install(true)
+pyDataverse_APIs() = pyDataverse_APIs(true)
 
 include("pyDataverse.jl")
 export pyDataverse

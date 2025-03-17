@@ -17,12 +17,15 @@ if do_py_test>1
 end
 
 @testset "Dataverse.jl" begin
-    lst=Dataverse.downloads.OCCA_file_list()
-    pth=joinpath(tempdir(),string(UUIDs.uuid4()))
-    mkdir(pth)
+    (header,dataverses,datasets)=Dataverse.dataverse_scan()
+    @test isa(header,Dict)
 
     j=json_ld.get("10.7910/DVN/CAGYQL")
     @test j["@type"]=="sc:Dataset"
+
+    lst=Dataverse.downloads.OCCA_file_list()
+    pth=joinpath(tempdir(),string(UUIDs.uuid4()))
+    mkdir(pth)
     
     jj=2
     Dataverse.file_download(lst,lst.filename[jj],pth)
