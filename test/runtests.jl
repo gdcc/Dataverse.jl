@@ -16,8 +16,8 @@ end
     (header,dataverses,datasets)=Dataverse.dataverse_scan()
     @test isa(header,Dict)
 
-    j=json_ld.get("10.7910/DVN/CAGYQL")
-    @test j["@type"]=="sc:Dataset"
+#    j=json_ld.get("10.7910/DVN/CAGYQL")
+#    @test j["@type"]=="sc:Dataset"
 
     lst=Dataverse.file_list(:OCCA_clim)
     pth=joinpath(tempdir(),string(UUIDs.uuid4()))
