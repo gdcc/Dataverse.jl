@@ -1,24 +1,27 @@
 
 module downloads
 
-import Dataverse.restDataverse: file_list
+import Dataverse.restDataverse: file_list, DEFAULT_BASE_URL
 using Downloads, DataFrames
 using Tar, CodecZlib, ZipFile
 
 ##
 
 """
-    file_download(DOI::String,nam::String,pth=tempdir())
+    file_download(DOI::String, name::String, path=tempdir(); base_url=DEFAULT_BASE_URL)
+
+Download a named file from a dataset. Use `base_url` to connect to a Dataverse
+installation other than Harvard Dataverse.
 
 ```
 DOI="doi:10.7910/DVN/OYBLGK"
 filename="polygons_MBON_seascapes.geojson"
-Dataverse.file_download(DOI,filename)
+Dataverse.file_download(DOI, filename)
 ```
 """
-function file_download(DOI::String,nam::String,pth=tempdir())
-    df=file_list(DOI)
-    file_download(df,nam,pth)
+function file_download(DOI::String, name::String, path=tempdir(); base_url=DEFAULT_BASE_URL)
+    files = file_list(DOI; base_url=base_url)
+    file_download(files, name, path)
 end
 
 """

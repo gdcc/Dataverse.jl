@@ -20,6 +20,9 @@ end
 begin
 	using Dataverse, PlutoUI, Downloads
 	using DataFrames, PrettyTables
+	default_base_url = "https://dataverse.harvard.edu"
+	base_url = get(ENV, "DATAVERSE_BASE_URL", default_base_url)
+	offline_docs_build = get(ENV, "CI", "false") == "true"
 	"Packages ready"
 end
 
@@ -60,12 +63,19 @@ end
 
 # ╔═╡ 2240395b-4112-4e8a-a233-26fde9dffbc4
 begin
-	df=Dataverse.file_list(DOI)
-
-	#alternative : 
-	#🏁
-	#dataset = NativeApi.get_dataset(DOI)
-	#df=pyDataverse.dataset_file_list(DOI)
+	# Documentation CI uses deterministic sample metadata instead of contacting
+	# a production Dataverse. Interactive Pluto sessions use the selected server.
+	df = if offline_docs_build
+		DataFrame(
+			filename=["example.txt"],
+			filesize=[18],
+			id=[1],
+			url=["$(rstrip(base_url, '/'))/api/access/datafile/1"],
+		)
+	else
+		base_url == default_base_url ? Dataverse.file_list(DOI) :
+			Dataverse.file_list(DOI; base_url=base_url)
+	end
 
 	"Done scanning dataset files"
 end
@@ -96,7 +106,10 @@ md""" Download file ? $(@bind dl Select([true,false],default=true))"""
 # ╔═╡ ffe06b1c-0e0e-44df-93d5-c33d88bf7e7e
 begin
 	file_dl=joinpath(tempdir(),file)
-	dl&&!isfile(file_dl) ? Dataverse.file_download(DOI,file) : nothing
+	if !offline_docs_build && dl && !isfile(file_dl)
+		base_url == default_base_url ? Dataverse.file_download(DOI, file) :
+			Dataverse.file_download(DOI, file; base_url=base_url)
+	end
 end
 
 # ╔═╡ 1a5a27c9-7f72-49b7-a406-2576c11f0f3c
@@ -122,12 +135,18 @@ Or you select one interactively (scroll down a bit).
 
 # ╔═╡ 756bec67-c27e-49c1-9573-9521746cf856
 begin
-	#🏁
-	#using pyDataverse instead:
-	#tree=pyDataverse.dataverse_file_list()
-	
-	(header,dataverses,datasets)=Dataverse.dataverse_scan()
-	tree=[Dataverse.file_list(url) for url in datasets.persistentUrl]
+	if offline_docs_build
+		header = Dict("name" => "Documentation example")
+		dataverses = DataFrame(id=[], type=[], title=[])
+		datasets = DataFrame(id=[], type=[], persistentUrl=[])
+		tree = [df]
+	else
+		header, dataverses, datasets = base_url == default_base_url ?
+			Dataverse.dataverse_scan() : Dataverse.dataverse_scan(; base_url=base_url)
+		tree = base_url == default_base_url ?
+			[Dataverse.file_list(url) for url in datasets.persistentUrl] :
+			[Dataverse.file_list(url; base_url=base_url) for url in datasets.persistentUrl]
+	end
 	"Done scanning dataverse files"
 end
 
