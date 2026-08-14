@@ -1,5 +1,8 @@
 using Dataverse, PythonCall, Documenter, PlutoSliderServer
 
+# Export the Pluto notebook with deterministic sample data, never production API calls.
+ENV["DATAVERSE_OFFLINE_DOCS"] = "true"
+
 DocMeta.setdocmeta!(Dataverse, :DocTestSetup, :(using Dataverse); recursive=true)
 
 do_py_test=false

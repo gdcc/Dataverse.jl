@@ -11,33 +11,26 @@ This package is about interfaces to the [Dataverse](https://dataverse.org) data 
 !!! warning
     This package is in early development stage.
 
-For example:
+For example, list and download files from the default Harvard Dataverse instance:
 
-```@example 1
-using Dataverse 
+```julia
+using Dataverse
 
-DOI="doi:10.7910/DVN/EE3C40"
-files=Dataverse.file_list(DOI)
-Dataverse.file_download(DOI,files.filename[1])
+DOI = "doi:10.7910/DVN/EE3C40"
+files = Dataverse.file_list(DOI)
+Dataverse.file_download(DOI, files.filename[1])
 ```
 
-or 
+Use `base_url` to connect to another Dataverse installation:
 
-```@example 1
-(header,dataverses,datasets)=Dataverse.dataverse_scan(:ECCOv4r2)
+```julia
+base_url = "https://data.example.edu"
+files = Dataverse.file_list("doi:10.1234/EXAMPLE"; base_url=base_url)
+header, dataverses, datasets = Dataverse.dataverse_scan(:root; base_url=base_url)
 ```
 
-then
-
-```@example 1
-files=Dataverse.file_list(datasets.persistentUrl[1])
-```
-
-and 
-
-```@example 1
-Dataverse.file_download(files,files.filename[1])
-```
+The documentation build does not execute these network examples. The CI integration
+tests use an isolated Dataverse instance created for each test run.
 
 ## Julia Dataverse API
 

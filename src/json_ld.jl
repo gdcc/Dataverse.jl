@@ -7,33 +7,42 @@ module json_ld
 """
 
 import HTTP, JSON
+import Dataverse.restDataverse: DEFAULT_BASE_URL, _build_url
 
 """
-    get(doi; to_file=false)
+    get(doi; to_file=false, base_url=DEFAULT_BASE_URL)
+
+Read the JSON-LD metadata embedded in a Dataverse dataset page.
 
 ```
-j=json_ld.get("10.7910/DVN/CAGYQL")
+j = json_ld.get("10.7910/DVN/CAGYQL")
 ```
 """
-get(doi; to_file=false) = begin
-  h=doi_to_html("10.7910/DVN/CAGYQL")
-  j,f=html_to_json_ld(h)
-  to_file ? f : j
+get(doi; to_file=false, base_url=DEFAULT_BASE_URL) = begin
+  html = doi_to_html(doi; base_url=base_url)
+  json, file = html_to_json_ld(html)
+  to_file ? file : json
 end
 
 """
-    html_to_json_ld(file_html1)
+    doi_to_html(doi; base_url=DEFAULT_BASE_URL)
+
+Download the Dataverse dataset page for a DOI to a temporary HTML file.
 
 ```
-h=json_ld.doi_to_html("10.7910/DVN/CAGYQL")
+h = json_ld.doi_to_html("10.7910/DVN/CAGYQL")
 ```
 """
-doi_to_html(doi) = begin
-  url="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:$(doi)"
-  r=HTTP.get(url)
-  f=tempname()*".html"
-  write(f,r)
-  f
+doi_to_html(doi; base_url=DEFAULT_BASE_URL) = begin
+  url = _build_url(
+    base_url,
+    "/dataset.xhtml";
+    query=Dict("persistentId" => "doi:$(doi)"),
+  )
+  response = HTTP.get(url)
+  file = tempname() * ".html"
+  write(file, response)
+  file
 end
 
 """

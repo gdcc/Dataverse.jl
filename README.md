@@ -9,6 +9,18 @@
 
 Interface to the [Dataverse project](https://dataverse.org) APIs, collections and datasets.
 
+Functions use Harvard Dataverse by default for backward compatibility. Use the
+`base_url` keyword to connect to another Dataverse installation:
+
+```julia
+using Dataverse
+
+files = Dataverse.file_list(
+    "doi:10.1234/EXAMPLE";
+    base_url="https://data.example.edu",
+)
+```
+
 👉 [demo notebook](https://gdcc.github.io/Dataverse.jl/dev/notebook.html) and [notebook code](https://github.com/gdcc/Dataverse.jl/blob/main/docs/src/notebook.jl)
 
 https://user-images.githubusercontent.com/20276764/191961603-97f2fd21-bda1-42bf-b0a1-d9ea88bf480d.mp4
