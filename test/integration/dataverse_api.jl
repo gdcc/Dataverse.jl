@@ -13,7 +13,8 @@ using .DataverseTestFixture
     @test header["alias"] == fixture.dataverse_alias
     @test isempty(child_dataverses)
     @test size(datasets, 1) == 1
-    @test occursin(fixture.persistent_id, datasets.persistentUrl[1])
+    expected_persistent_url = replace(fixture.persistent_id, r"^doi:" => "https://doi.org/")
+    @test datasets.persistentUrl == [expected_persistent_url]
 
     files = Dataverse.file_list(fixture.persistent_id; base_url=base_url)
     @test size(files, 1) == 1
