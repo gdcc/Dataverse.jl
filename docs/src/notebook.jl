@@ -22,7 +22,7 @@ begin
 	using DataFrames, PrettyTables
 	default_base_url = "https://dataverse.harvard.edu"
 	base_url = get(ENV, "DATAVERSE_BASE_URL", default_base_url)
-	offline_docs_build = get(ENV, "CI", "false") == "true"
+	offline_docs_build = get(ENV, "DATAVERSE_OFFLINE_DOCS", "false") == "true"
 	"Packages ready"
 end
 
