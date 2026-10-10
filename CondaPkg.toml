@@ -1,0 +1,5 @@
+[deps]
+python = "3.*"
+
+[pip.deps]
+pyDataverse = ""
